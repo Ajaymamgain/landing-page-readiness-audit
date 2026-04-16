@@ -146,10 +146,31 @@ const html = `<!DOCTYPE html>
       <p>${esc(verdictDetail)}</p>
     </div>
 
-    <h2>CRO — priority order</h2>
+    <h2>CRO — priority order (this run)</h2>
     <ol>
 ${cro.map((c) => `      <li>${esc(c)}</li>`).join('\n')}
     </ol>
+
+    <h2>Conversion Ops — 8-dimension CRO (Eric Siu / ai-marketing-skills)</h2>
+    <p>
+      This HTML does <strong>not</strong> execute <code>cro_audit.py</code>. For a scored landing-page CRO pass aligned with
+      <a href="https://github.com/ericosiu/ai-marketing-skills/tree/main/conversion-ops" style="color:var(--accent);">conversion-ops</a>
+      (MIT License, © 2026 Single Grain), run separately and merge findings into your stakeholder deck:
+    </p>
+    <pre style="background:#141414;padding:0.85rem;border-radius:8px;overflow:auto;font-size:0.8rem;">cd ai-marketing-skills/conversion-ops &amp;&amp; pip install -r requirements.txt
+python cro_audit.py --url ${esc(lhr.finalUrl || probe.requestedUrl || '')} --industry general --json</pre>
+    <table>
+      <tr><th>Dimension (0–100 each)</th><th>Notes vs this report</th></tr>
+      <tr><td>Headline Clarity</td><td>Not covered by Lighthouse — CRO tool</td></tr>
+      <tr><td>CTA Visibility</td><td>Not covered by Lighthouse — CRO tool</td></tr>
+      <tr><td>Social Proof</td><td>Not covered by Lighthouse — CRO tool</td></tr>
+      <tr><td>Urgency</td><td>Not covered by Lighthouse — CRO tool</td></tr>
+      <tr><td>Trust Signals</td><td>Partial overlap with Best Practices — CRO tool is copy/UX focused</td></tr>
+      <tr><td>Form Friction</td><td>Not covered by Lighthouse — CRO tool</td></tr>
+      <tr><td>Mobile Responsiveness</td><td>Overlaps lab + A11y partly — CRO adds heuristics</td></tr>
+      <tr><td>Page Speed Indicators</td><td><strong>Lighthouse below is authoritative</strong> for lab perf; CRO uses lighter HTML heuristics</td></tr>
+    </table>
+    <p style="font-size:0.82rem;color:var(--muted);">Cursor skills: <code>~/.cursor/skills/conversion-ops/SKILL.md</code> and <code>google-ads-readiness-modern/reference/conversion-ops.md</code></p>
 
     <h2>Lighthouse — category scores (stock)</h2>
     <div class="grid">

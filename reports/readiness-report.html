@@ -31,28 +31,49 @@
     <p class="meta">
       <strong>Final URL:</strong> https://lobangnow.com/<br/>
       <strong>Requested:</strong> https://lobangnow.com<br/>
-      <strong>Generated:</strong> 2026-04-16T13:15:22.800Z<br/>
+      <strong>Generated:</strong> 2026-04-16T13:37:14.940Z<br/>
       <strong>Lighthouse:</strong> 12.8.2 (stock CLI, no Publisher Ads npm plugin)<br/>
       <strong>Playwright:</strong> network + console probe (see JSON paths below)
     </p>
 
     <h2>Single verdict</h2>
     <div class="box">
-      <p><strong>Needs manual review</strong></p>
-      <p>Stock Lighthouse + Playwright only — the deprecated npm Publisher Ads plugin is not used. Monetization readiness requires confirming GPT/ad traffic on representative URLs.</p>
+      <p><strong>Not ready (performance)</strong></p>
+      <p>Performance 41/100 with weak lab vitals — treat as revenue/CRO risk until improved. Stock Lighthouse + Playwright only — the deprecated npm Publisher Ads plugin is not used. Monetization readiness requires confirming GPT/ad traffic on representative URLs.</p>
     </div>
 
-    <h2>CRO — priority order</h2>
+    <h2>CRO — priority order (this run)</h2>
     <ol>
-      <li>P0 — Fix Performance (54/100): LCP 4.9 s, TBT 820 ms — reduces bounce and lost impressions.</li>
+      <li>P0 — Fix Performance (41/100): LCP 5.2 s, TBT 2,130 ms — reduces bounce and lost impressions.</li>
       <li>P1 — Confirm ads: Playwright saw 0 ad-pattern requests; GPT-like traffic not detected — test deal/article routes if homepage is light on ads.</li>
       <li>P2 — Accessibility (86/100) and trust signals — secondary to speed + monetization path.</li>
       <li>P3 — SEO (100/100) — maintain while executing P0/P1.</li>
     </ol>
 
+    <h2>Conversion Ops — 8-dimension CRO (Eric Siu / ai-marketing-skills)</h2>
+    <p>
+      This HTML does <strong>not</strong> execute <code>cro_audit.py</code>. For a scored landing-page CRO pass aligned with
+      <a href="https://github.com/ericosiu/ai-marketing-skills/tree/main/conversion-ops" style="color:var(--accent);">conversion-ops</a>
+      (MIT License, © 2026 Single Grain), run separately and merge findings into your stakeholder deck:
+    </p>
+    <pre style="background:#141414;padding:0.85rem;border-radius:8px;overflow:auto;font-size:0.8rem;">cd ai-marketing-skills/conversion-ops &amp;&amp; pip install -r requirements.txt
+python cro_audit.py --url https://lobangnow.com/ --industry general --json</pre>
+    <table>
+      <tr><th>Dimension (0–100 each)</th><th>Notes vs this report</th></tr>
+      <tr><td>Headline Clarity</td><td>Not covered by Lighthouse — CRO tool</td></tr>
+      <tr><td>CTA Visibility</td><td>Not covered by Lighthouse — CRO tool</td></tr>
+      <tr><td>Social Proof</td><td>Not covered by Lighthouse — CRO tool</td></tr>
+      <tr><td>Urgency</td><td>Not covered by Lighthouse — CRO tool</td></tr>
+      <tr><td>Trust Signals</td><td>Partial overlap with Best Practices — CRO tool is copy/UX focused</td></tr>
+      <tr><td>Form Friction</td><td>Not covered by Lighthouse — CRO tool</td></tr>
+      <tr><td>Mobile Responsiveness</td><td>Overlaps lab + A11y partly — CRO adds heuristics</td></tr>
+      <tr><td>Page Speed Indicators</td><td><strong>Lighthouse below is authoritative</strong> for lab perf; CRO uses lighter HTML heuristics</td></tr>
+    </table>
+    <p style="font-size:0.82rem;color:var(--muted);">Cursor skills: <code>~/.cursor/skills/conversion-ops/SKILL.md</code> and <code>google-ads-readiness-modern/reference/conversion-ops.md</code></p>
+
     <h2>Lighthouse — category scores (stock)</h2>
     <div class="grid">
-      <div class="card"><span>Performance</span><strong class="">54</strong></div>
+      <div class="card"><span>Performance</span><strong class="bad">41</strong></div>
       <div class="card"><span>Accessibility</span><strong class="warn">86</strong></div>
       <div class="card"><span>Best practices</span><strong>96</strong></div>
       <div class="card"><span>SEO</span><strong>100</strong></div>
@@ -61,27 +82,27 @@
     <h3>Core lab vitals (this run)</h3>
     <table>
       <tr><th>Metric</th><th>Value</th></tr>
-      <tr><td>LCP</td><td>4.9 s</td></tr>
+      <tr><td>LCP</td><td>5.2 s</td></tr>
       <tr><td>CLS</td><td>0</td></tr>
-      <tr><td>TBT</td><td>820 ms</td></tr>
+      <tr><td>TBT</td><td>2,130 ms</td></tr>
       <tr><td>INP</td><td>Not in this LHR</td></tr>
     </table>
 
     <h3>Lowest-scoring Lighthouse audits (sample)</h3>
     <table>
       <tr><th>Audit</th><th>Score</th><th>Display</th></tr>
-      <tr><td>Minimize main-thread work</td><td>0.00</td><td>4.2 s</td></tr>
-      <tr><td>Reduce JavaScript execution time</td><td>0.00</td><td>2.9 s</td></tr>
-      <tr><td>Largest Contentful Paint element</td><td>0.00</td><td>4,880 ms</td></tr>
+      <tr><td>Max Potential First Input Delay</td><td>0.00</td><td>860 ms</td></tr>
+      <tr><td>Minimize main-thread work</td><td>0.00</td><td>7.6 s</td></tr>
+      <tr><td>Reduce JavaScript execution time</td><td>0.00</td><td>4.9 s</td></tr>
+      <tr><td>Reduce the impact of third-party code</td><td>0.00</td><td>Third-party code blocked the main thread for 450 ms</td></tr>
+      <tr><td>Largest Contentful Paint element</td><td>0.00</td><td>5,220 ms</td></tr>
       <tr><td>Missing source maps for large first-party JavaScript</td><td>0.00</td><td></td></tr>
       <tr><td>Buttons do not have an accessible name</td><td>0.00</td><td></td></tr>
       <tr><td>Background and foreground colors do not have a sufficient contrast ratio.</td><td>0.00</td><td></td></tr>
-      <tr><td>Eliminate render-blocking resources</td><td>0.00</td><td>Est savings of 810 ms</td></tr>
-      <tr><td>Reduce unused JavaScript</td><td>0.00</td><td>Est savings of 196 KiB</td></tr>
+      <tr><td>Eliminate render-blocking resources</td><td>0.00</td><td>Est savings of 820 ms</td></tr>
+      <tr><td>Reduce unused JavaScript</td><td>0.00</td><td>Est savings of 197 KiB</td></tr>
       <tr><td>Charset declaration is missing or occurs too late in the HTML</td><td>0.00</td><td></td></tr>
       <tr><td>Network dependency tree</td><td>0.00</td><td></td></tr>
-      <tr><td>Render blocking requests</td><td>0.00</td><td>Est savings of 650 ms</td></tr>
-      <tr><td>Max Potential First Input Delay</td><td>0.18</td><td>400 ms</td></tr>
     </table>
 
     <h2>Playwright — real browser signals</h2>
