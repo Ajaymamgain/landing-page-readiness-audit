@@ -1,0 +1,19 @@
+{
+  "name": "google-ads-readiness-audit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Stock Lighthouse + Playwright probes (no publisher-ads plugin). Feeds HTML readiness reports.",
+  "type": "module",
+  "scripts": {
+    "lh": "node scripts/lighthouse-run.mjs",
+    "probe": "node scripts/playwright-probe.mjs",
+    "audit": "node scripts/full-audit.mjs"
+  },
+  "devDependencies": {
+    "lighthouse": "^12.8.1",
+    "playwright": "^1.52.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

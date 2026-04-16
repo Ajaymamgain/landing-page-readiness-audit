@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LobangNow — Google Ads readiness (Lighthouse 12 + Playwright, no legacy plugin)</title>
+  <style>
+    :root { --bg:#070707; --card:#111; --text:#e5e5e5; --muted:#a3a3a3; --border:#262626; --accent:#22c55e; --bad:#f87171; --warn:#fbbf24; }
+    body { margin:0; font-family: ui-sans-serif, system-ui, sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    h1 { font-size: 1.65rem; margin: 0 0 0.5rem; }
+    .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.1rem; margin: 2rem 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .pill { display:inline-block; font-size:0.65rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:0.25rem 0.6rem; border-radius:999px; background:rgba(34,197,94,.15); color:var(--accent); margin-right:0.4rem; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap:0.6rem; margin:1rem 0; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.85rem; }
+    .card span { display:block; font-size:0.65rem; text-transform:uppercase; color:var(--muted); letter-spacing:0.05em; }
+    .card strong { font-size:1.5rem; font-variant-numeric: tabular-nums; }
+    .bad { color: var(--bad); }
+    .warn { color: var(--warn); }
+    table { width:100%; border-collapse:collapse; font-size:0.88rem; margin:0.75rem 0; }
+    th, td { border:1px solid var(--border); padding:0.5rem 0.6rem; text-align:left; }
+    th { background:#141414; color:var(--muted); font-size:0.72rem; text-transform:uppercase; }
+    ul { margin:0.5rem 0 1rem; padding-left:1.2rem; }
+    .box { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1rem 1.1rem; margin:1rem 0; }
+    code { font-size:0.82rem; color:#86efac; }
+    .footnotes { margin-top:2.5rem; font-size:0.8rem; color:var(--muted); border-top:1px solid var(--border); padding-top:1.2rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p><span class="pill">Method</span><span class="pill">No lighthouse-plugin-publisher-ads</span></p>
+    <h1>LobangNow — Google Ads readiness assessment</h1>
+    <p class="meta">
+      <strong>URL:</strong> <a href="https://lobangnow.com/" style="color:var(--accent);">https://lobangnow.com/</a><br />
+      <strong>Generated:</strong> 16 April 2026<br />
+      <strong>Lighthouse</strong> 12.8.2 (stock CLI, mobile lab) · <strong>Playwright</strong> Chromium probe with scroll<br />
+      <strong>Publisher Ads plugin (npm):</strong> intentionally not used — outdated vs current Lighthouse; audit <em>concepts</em> taken from Google’s public docs only.
+    </p>
+
+    <h2>Executive verdict</h2>
+    <div class="box">
+      <p><strong class="warn">Needs manual review</strong> for <strong>Google Ads / GAM monetization readiness</strong> on this URL.</p>
+      <p><strong>Performance:</strong> Lab scores show material speed debt (Performance <strong>39/100</strong>, LCP <strong>~5.9&nbsp;s</strong>, TBT <strong>~2,010&nbsp;ms</strong>) — high <strong>CRO / revenue risk</strong> (bounce and reduced inventory before ads matter).</p>
+      <p><strong>Playwright:</strong> After load + scroll, <strong>no requests</strong> matched common Google ad stack patterns (<code>gpt.js</code>, <code>doubleclick</code>, <code>googlesyndication</code>, <code>pagead</code>, etc.). That does <strong>not</strong> prove ads are absent site-wide; it means <strong>this automated pass did not observe</strong> them. Retest a high–ad-density template (e.g. deal detail) or a logged-in / consent-resolved state.</p>
+    </div>
+
+    <h2>CRO prioritization (importance)</h2>
+    <p>Ordered by business impact × evidence strength (see skill <code>google-ads-readiness-modern</code> / <code>cro-prioritization.md</code>).</p>
+    <ol>
+      <li><strong>P0 — Speed to first meaningful content</strong> (LCP ~5.9&nbsp;s, TBT ~2&nbsp;s): Slow pages lose sessions and scroll depth → fewer impressions. Fix main-thread cost and critical path before cosmetic SEO wins.</li>
+      <li><strong>P1 — Validate monetization surface</strong>: Re-run Playwright + DevTools on URLs where product guarantees ad slots fire; without that, “Ads ready / not ready” is speculative.</li>
+      <li><strong>P2 — Accessibility</strong> (86/100): Button names, contrast — affects trust and engagement; supports CRO indirectly.</li>
+      <li><strong>P3 — SEO</strong> (100/100 lab): Strong technical SEO here; maintain while fixing perf.</li>
+    </ol>
+
+    <h2>Lighthouse (stock) — category scores</h2>
+    <div class="grid">
+      <div class="card"><span>Performance</span><strong class="bad">39</strong></div>
+      <div class="card"><span>Accessibility</span><strong class="warn">86</strong></div>
+      <div class="card"><span>Best practices</span><strong>96</strong></div>
+      <div class="card"><span>SEO</span><strong>100</strong></div>
+    </div>
+    <table>
+      <thead><tr><th>Metric (lab)</th><th>Value</th><th>CRO note</th></tr></thead>
+      <tbody>
+        <tr><td>LCP</td><td>5.9&nbsp;s</td><td>Primary content slow; users may leave before engaging with deals or ads.</td></tr>
+        <tr><td>CLS</td><td>0</td><td>Stable layout in this run — good for click confidence.</td></tr>
+        <tr><td>TBT</td><td>2,010&nbsp;ms</td><td>Main-thread blocking — hurts interactivity and time-on-page.</td></tr>
+        <tr><td>INP</td><td>Not reported</td><td>Use field (CrUX/RUM) or Lighthouse versions/configs that include INP for this URL.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Playwright probe (network + console)</h2>
+    <p>Automated scroll + ~5&nbsp;s wait. Output: <code>lobangnow-modern-probe.json</code></p>
+    <ul>
+      <li><strong>Ad-related requests captured:</strong> 0 (pattern-matched GPT / Google Ads domains).</li>
+      <li><strong>Console / page errors:</strong> none in this pass.</li>
+      <li><strong>Interpretation:</strong> Cannot confirm Google Publisher stack on homepage from this trace alone. Use DevTools Network filter manually and test article pages.</li>
+    </ul>
+
+    <h2>Chrome DevTools (recommended manual steps)</h2>
+    <ul>
+      <li><strong>Network</strong> — filter <code>gpt</code>, <code>pubads</code>, <code>doubleclick</code>; verify tag order vs LCP.</li>
+      <li><strong>Performance</strong> — record interaction + scroll; identify long tasks from third parties.</li>
+      <li><strong>Coverage</strong> — quantify unused JS contributing to TBT.</li>
+    </ul>
+
+    <h2>Publisher Ads documentation (study only)</h2>
+    <p>
+      The open-source <a href="https://github.com/googleads/publisher-ads-lighthouse-plugin" style="color:var(--accent);">publisher-ads-lighthouse-plugin</a> repo remains useful <strong>reading</strong> for what to check (tag async, header bidding, CLS around slots). This report does <strong>not</strong> use the npm plugin against Lighthouse 12.
+      Mirrored explainers: <code>~/.cursor/skills/publisher-ads-readiness/reference/audits/</code>.
+    </p>
+
+    <h2>Evidence artifacts</h2>
+    <ul>
+      <li><code>reports/lobangnow-modern-lh.report.json</code> — full LHR (Lighthouse 12).</li>
+      <li><code>reports/lobangnow-modern-lh.report.html</code> — Lighthouse HTML report.</li>
+      <li><code>reports/lobangnow-modern-probe.json</code> — Playwright probe JSON.</li>
+    </ul>
+
+    <div class="footnotes">
+      Single-run lab + one Playwright trace; not field data. Not affiliated with LobangNow or Google.
+      For a definitive “Google Ads ready” call, validate ad tag behaviour on representative monetized routes and combine with business KPIs.
+    </div>
+  </div>
+</body>
+</html>
