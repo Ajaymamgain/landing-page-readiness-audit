@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unified readiness report — https://lobangnow.com/</title>
+  <style>
+    :root { --bg:#070707; --card:#111; --text:#e5e5e5; --muted:#a3a3a3; --border:#262626; --accent:#22c55e; --bad:#f87171; --warn:#fbbf24; }
+    body { margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+    h1 { font-size: 1.5rem; margin: 0 0 0.5rem; }
+    .meta { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.75rem; }
+    h2 { font-size: 1.05rem; margin: 2rem 0 0.65rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 0.5rem; margin: 1rem 0; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 0.85rem; }
+    .card span { display:block; font-size:0.62rem; text-transform:uppercase; color:var(--muted); }
+    .card strong { font-size: 1.4rem; }
+    .bad { color: var(--bad); } .warn { color: var(--warn); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.5rem 0; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.5rem; text-align: left; vertical-align: top; }
+    th { background:#141414; color:var(--muted); font-size:0.72rem; text-transform:uppercase; }
+    .box { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; margin: 1rem 0; }
+    code { color: #86efac; font-size: 0.82rem; }
+    ul { margin: 0.4rem 0; padding-left: 1.2rem; }
+    .footnotes { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Unified Google Ads / monetization readiness report</h1>
+    <p class="meta">
+      <strong>Final URL:</strong> https://lobangnow.com/<br/>
+      <strong>Requested:</strong> https://lobangnow.com<br/>
+      <strong>Generated:</strong> 2026-04-16T13:15:22.800Z<br/>
+      <strong>Lighthouse:</strong> 12.8.2 (stock CLI, no Publisher Ads npm plugin)<br/>
+      <strong>Playwright:</strong> network + console probe (see JSON paths below)
+    </p>
+
+    <h2>Single verdict</h2>
+    <div class="box">
+      <p><strong>Needs manual review</strong></p>
+      <p>Stock Lighthouse + Playwright only — the deprecated npm Publisher Ads plugin is not used. Monetization readiness requires confirming GPT/ad traffic on representative URLs.</p>
+    </div>
+
+    <h2>CRO — priority order</h2>
+    <ol>
+      <li>P0 — Fix Performance (54/100): LCP 4.9 s, TBT 820 ms — reduces bounce and lost impressions.</li>
+      <li>P1 — Confirm ads: Playwright saw 0 ad-pattern requests; GPT-like traffic not detected — test deal/article routes if homepage is light on ads.</li>
+      <li>P2 — Accessibility (86/100) and trust signals — secondary to speed + monetization path.</li>
+      <li>P3 — SEO (100/100) — maintain while executing P0/P1.</li>
+    </ol>
+
+    <h2>Lighthouse — category scores (stock)</h2>
+    <div class="grid">
+      <div class="card"><span>Performance</span><strong class="">54</strong></div>
+      <div class="card"><span>Accessibility</span><strong class="warn">86</strong></div>
+      <div class="card"><span>Best practices</span><strong>96</strong></div>
+      <div class="card"><span>SEO</span><strong>100</strong></div>
+    </div>
+
+    <h3>Core lab vitals (this run)</h3>
+    <table>
+      <tr><th>Metric</th><th>Value</th></tr>
+      <tr><td>LCP</td><td>4.9 s</td></tr>
+      <tr><td>CLS</td><td>0</td></tr>
+      <tr><td>TBT</td><td>820 ms</td></tr>
+      <tr><td>INP</td><td>Not in this LHR</td></tr>
+    </table>
+
+    <h3>Lowest-scoring Lighthouse audits (sample)</h3>
+    <table>
+      <tr><th>Audit</th><th>Score</th><th>Display</th></tr>
+      <tr><td>Minimize main-thread work</td><td>0.00</td><td>4.2 s</td></tr>
+      <tr><td>Reduce JavaScript execution time</td><td>0.00</td><td>2.9 s</td></tr>
+      <tr><td>Largest Contentful Paint element</td><td>0.00</td><td>4,880 ms</td></tr>
+      <tr><td>Missing source maps for large first-party JavaScript</td><td>0.00</td><td></td></tr>
+      <tr><td>Buttons do not have an accessible name</td><td>0.00</td><td></td></tr>
+      <tr><td>Background and foreground colors do not have a sufficient contrast ratio.</td><td>0.00</td><td></td></tr>
+      <tr><td>Eliminate render-blocking resources</td><td>0.00</td><td>Est savings of 810 ms</td></tr>
+      <tr><td>Reduce unused JavaScript</td><td>0.00</td><td>Est savings of 196 KiB</td></tr>
+      <tr><td>Charset declaration is missing or occurs too late in the HTML</td><td>0.00</td><td></td></tr>
+      <tr><td>Network dependency tree</td><td>0.00</td><td></td></tr>
+      <tr><td>Render blocking requests</td><td>0.00</td><td>Est savings of 650 ms</td></tr>
+      <tr><td>Max Potential First Input Delay</td><td>0.18</td><td>400 ms</td></tr>
+    </table>
+
+    <h2>Playwright — real browser signals</h2>
+    <ul>
+      <li><strong>Ad-pattern HTTP requests:</strong> 0 (GPT/Google Ads URL heuristics)</li>
+      <li><strong>GPT-like load inferred:</strong> no</li>
+      <li><strong>Console/page errors:</strong> none captured</li>
+      <li><strong>Page title:</strong> LobangNow — WhatsApp In. Viral Out. | Singapore Daily Deals</li>
+    </ul>
+
+    <h2>Publisher Ads plugin *concepts* (manual checklist)</h2>
+    <p>The npm <code>lighthouse-plugin-publisher-ads</code> is <strong>not</strong> executed here (incompatible with modern Lighthouse). Below is the same <em>conceptual</em> coverage the plugin docs describe — verify in DevTools / staging, not as automated scores:</p>
+    <table>
+      <tr><th>Theme</th><th>Related audit ids (reference)</th></tr>
+      <tr><td>Tag load &amp; async loading</td><td><code>tag-load-time, async-ad-tags</code></td></tr>
+      <tr><td>Ad request latency &amp; waterfall</td><td><code>ad-request-from-page-start, ad-request-critical-path</code></td></tr>
+      <tr><td>Header bidding &amp; parallel bids</td><td><code>serial-header-bidding, gpt-bids-parallel</code></td></tr>
+      <tr><td>Layout shift around ads (CLS)</td><td><code>cumulative-ad-shift</code></td></tr>
+      <tr><td>Main-thread / ad JS blocking</td><td><code>total-ad-blocking-time, ad-blocking-tasks</code></td></tr>
+      <tr><td>GPT source, HTTPS, static loaders</td><td><code>loads-gpt-from-official-source, loads-ad-tag-over-https, script-injected-tags</code></td></tr>
+      <tr><td>GPT errors &amp; deprecated APIs</td><td><code>gpt-errors-overall, deprecated-api-usage</code></td></tr>
+      <tr><td>Slot density &amp; viewport</td><td><code>viewport-ad-density, ads-in-viewport, ad-top-of-viewport</code></td></tr>
+    </table>
+    <p>Bundled markdown explainers: <code>~/.cursor/skills/publisher-ads-readiness/reference/audits/</code></p>
+
+    <h2>Evidence (this run only)</h2>
+    <p>This file is the <strong>only</strong> narrative report. Supporting machine files:</p>
+    <ul>
+      <li><code>reports/latest-lh.report.json</code> — Lighthouse JSON (LHR)</li>
+      <li><code>reports/latest-lh.report.html</code> — Lighthouse HTML</li>
+      <li><code>reports/latest-probe.json</code> — Playwright probe JSON</li>
+    </ul>
+
+    <div class="footnotes">
+      One report per run; regenerate by executing <code>npm run report -- &lt;url&gt;</code> from the project root.
+      Not affiliated with Google or the site owner. Lab data only unless you add RUM/CrUX separately.
+    </div>
+  </div>
+</body>
+</html>
