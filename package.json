@@ -7,6 +7,7 @@
   "scripts": {
     "lh": "node scripts/lighthouse-run.mjs",
     "probe": "node scripts/playwright-probe.mjs",
+    "cro": "node scripts/cro-audit-run.mjs",
     "report": "node scripts/run-report.mjs"
   },
   "devDependencies": {

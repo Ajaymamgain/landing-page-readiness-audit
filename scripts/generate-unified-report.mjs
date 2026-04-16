@@ -1,24 +1,38 @@
 #!/usr/bin/env node
 /**
- * Build ONE polished HTML report from Lighthouse LHR + Playwright probe JSON.
- * Features: SVG gauge rings, traffic-light vitals, verdict banner, print CSS.
+ * Build ONE polished HTML report from Lighthouse LHR + Playwright probe + optional CRO JSON.
+ * Features: SVG gauge rings, traffic-light vitals, verdict banner, print CSS, live CRO scores.
  *
- * Usage: node scripts/generate-unified-report.mjs <lhr.json> <probe.json> [out.html]
+ * Usage: node scripts/generate-unified-report.mjs <lhr.json> <probe.json> [cro.json] <out.html>
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
 
-const lhrPath = process.argv[2];
-const probePath = process.argv[3];
-const outHtml = process.argv[4] ?? join(root, 'reports', 'readiness-report.html');
-
-if (!lhrPath || !probePath) {
-  console.error('Usage: node scripts/generate-unified-report.mjs <lhr.json> <probe.json> [out.html]');
+// Parse args: <lhr> <probe> [cro] <out>
+const args = process.argv.slice(2);
+if (args.length < 2) {
+  console.error('Usage: node scripts/generate-unified-report.mjs <lhr.json> <probe.json> [cro.json] [out.html]');
   process.exit(1);
+}
+
+const lhrPath = args[0];
+const probePath = args[1];
+let croPath = null;
+let outHtml = join(root, 'reports', 'readiness-report.html');
+
+if (args.length === 4) {
+  croPath = args[2];
+  outHtml = args[3];
+} else if (args.length === 3) {
+  if (args[2].endsWith('.json')) {
+    croPath = args[2];
+  } else {
+    outHtml = args[2];
+  }
 }
 
 function esc(s) {
@@ -31,6 +45,13 @@ try { lhr = JSON.parse(readFileSync(lhrPath, 'utf8')); }
 catch (e) { console.error(`Failed to read/parse Lighthouse JSON at ${lhrPath}: ${e.message}`); process.exit(1); }
 try { probe = JSON.parse(readFileSync(probePath, 'utf8')); }
 catch (e) { console.error(`Failed to read/parse Playwright probe JSON at ${probePath}: ${e.message}`); process.exit(1); }
+
+let cro = null;
+if (croPath && existsSync(croPath)) {
+  try { cro = JSON.parse(readFileSync(croPath, 'utf8')); }
+  catch (e) { console.warn(`Warning: Could not parse CRO JSON at ${croPath}: ${e.message}`); }
+}
+const hasCro = cro && cro.overall_score != null;
 
 // --- Data extraction ---
 const cat = (k) => (lhr.categories[k]?.score != null ? Math.round(lhr.categories[k].score * 100) : null);
@@ -383,12 +404,54 @@ ${PUB_ADS_CONCEPTS.map((c) => `      <div class="check-item">
 
   <!-- Conversion Ops -->
   <div class="section">
-    <div class="section-title">Conversion Ops — 8-Dimension CRO <span class="tag">Eric Siu / ai-marketing-skills</span></div>
+    <div class="section-title">Conversion Ops — 8-Dimension CRO <span class="tag">${hasCro ? esc(cro.letter_grade) + ' — ' + esc(cro.overall_score) + '/100' : 'Not executed'}</span></div>
+${hasCro ? `
+    <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
+      ${gaugeRing(Math.round(cro.overall_score), 'CRO Score')}
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:1.1rem;font-weight:700;margin-bottom:.25rem">Overall: ${esc(cro.overall_score)}/100 <span style="color:${scoreColor(Math.round(cro.overall_score))}">(${esc(cro.letter_grade)})</span></div>
+        ${cro.benchmark_comparison ? `<div style="font-size:.82rem;color:var(--text3)">
+          Industry: ${esc(cro.benchmark_comparison.industry)} —
+          vs avg (${esc(cro.benchmark_comparison.industry_avg)}): <span style="color:${cro.benchmark_comparison.vs_avg >= 0 ? 'var(--green)' : 'var(--red)'}">${cro.benchmark_comparison.vs_avg >= 0 ? '↑' : '↓'}${Math.abs(cro.benchmark_comparison.vs_avg)} pts</span>,
+          vs top quartile (${esc(cro.benchmark_comparison.top_quartile)}): <span style="color:${cro.benchmark_comparison.vs_top >= 0 ? 'var(--green)' : 'var(--red)'}">${cro.benchmark_comparison.vs_top >= 0 ? '↑' : '↓'}${Math.abs(cro.benchmark_comparison.vs_top)} pts</span>
+        </div>` : ''}
+      </div>
+    </div>
+
+    <div style="padding:0 .25rem">
+      <div class="dim-row" style="padding-bottom:.4rem;margin-bottom:.35rem;border-bottom:1px solid var(--border2)">
+        <div class="dim-name" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600">Dimension</div>
+        <div style="width:60px;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600;text-align:center">Score</div>
+        <div class="dim-note" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600">Key finding</div>
+      </div>
+${Object.entries(cro.dimensions || {}).map(([key, dim]) => {
+  const c = scoreColor(dim.score);
+  const finding = (dim.findings && dim.findings[0]) || '';
+  return `      <div class="dim-row">
+        <div class="dim-name">${esc(dim.name)}</div>
+        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:${c}">${dim.score}</div>
+        <div class="dim-note" style="font-size:.78rem">${esc(finding)}</div>
+      </div>`;
+}).join('\n')}
+    </div>
+
+${(cro.priority_fixes && cro.priority_fixes.length > 0) ? `
+    <div style="margin-top:1.25rem">
+      <div style="font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.04em">Top CRO fixes</div>
+${cro.priority_fixes.slice(0, 6).map((fix, i) => {
+  const impColor = fix.impact === 'HIGH' ? 'var(--red)' : fix.impact === 'MEDIUM' ? 'var(--amber)' : 'var(--green)';
+  return `      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
+        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:${impColor}">${esc(fix.impact)}</span>
+        <span><strong style="color:var(--text)">${esc(fix.dimension)}</strong> — ${esc(fix.fix)}</span>
+      </div>`;
+}).join('\n')}
+    </div>` : ''}
+` : `
     <p style="font-size:.82rem;color:var(--text3);margin-bottom:.5rem">
-      This report does not execute <code style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--purple)">cro_audit.py</code>. Run separately from
-      <a href="https://github.com/ericosiu/ai-marketing-skills/tree/main/conversion-ops" style="color:var(--blue);text-decoration:none">conversion-ops</a> (MIT):
+      CRO audit was not executed in this run. To include live scores, ensure
+      <a href="https://github.com/ericosiu/ai-marketing-skills/tree/main/conversion-ops" style="color:var(--blue);text-decoration:none">ai-marketing-skills/conversion-ops</a>
+      is cloned alongside this project with its Python venv installed.
     </p>
-    <pre style="background:var(--surface2);padding:.75rem 1rem;border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text2);overflow-x:auto;border:1px solid var(--border);margin-bottom:1rem">python cro_audit.py --url ${esc(lhr.finalUrl || probe.requestedUrl || '')} --industry general --json</pre>
     <div style="padding:0 .25rem">
       <div class="dim-row" style="padding-bottom:.4rem;margin-bottom:.35rem;border-bottom:1px solid var(--border2)">
         <div class="dim-name" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600">Dimension</div>
@@ -398,11 +461,12 @@ ${PUB_ADS_CONCEPTS.map((c) => `      <div class="check-item">
       <div class="dim-row"><div class="dim-name">CTA Visibility</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
       <div class="dim-row"><div class="dim-name">Social Proof</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
       <div class="dim-row"><div class="dim-name">Urgency</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
-      <div class="dim-row"><div class="dim-name">Trust Signals</div><div class="dim-note"><span class="dim-badge dim-overlap">Partial overlap</span> Best Practices touches this</div></div>
+      <div class="dim-row"><div class="dim-name">Trust Signals</div><div class="dim-note"><span class="dim-badge dim-overlap">Partial</span> Best Practices touches this</div></div>
       <div class="dim-row"><div class="dim-name">Form Friction</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
-      <div class="dim-row"><div class="dim-name">Mobile Responsiveness</div><div class="dim-note"><span class="dim-badge dim-overlap">Partial overlap</span> Lab + A11y partially cover</div></div>
-      <div class="dim-row"><div class="dim-name">Page Speed Indicators</div><div class="dim-note"><span class="dim-badge dim-lh">Lighthouse</span> Lab perf is authoritative here</div></div>
+      <div class="dim-row"><div class="dim-name">Mobile Responsiveness</div><div class="dim-note"><span class="dim-badge dim-overlap">Partial</span> Lab + A11y partially cover</div></div>
+      <div class="dim-row"><div class="dim-name">Page Speed Indicators</div><div class="dim-note"><span class="dim-badge dim-lh">Lighthouse</span> Lab perf is authoritative</div></div>
     </div>
+`}
   </div>
 
   <!-- Evidence -->
@@ -414,6 +478,7 @@ ${PUB_ADS_CONCEPTS.map((c) => `      <div class="check-item">
         <li>📄 <code>${esc(lhrPath.replace(root + '/', ''))}</code> — Lighthouse JSON</li>
         <li>📄 <code>${esc(lhrPath.replace(/\.json$/, '.html').replace(root + '/', ''))}</code> — Lighthouse HTML</li>
         <li>📄 <code>${esc(probePath.replace(root + '/', ''))}</code> — Playwright probe JSON</li>
+${croPath ? `        <li>📄 <code>${esc(croPath.replace(root + '/', ''))}</code> — CRO audit JSON (conversion-ops)</li>` : ''}
       </ul>
     </div>
   </div>

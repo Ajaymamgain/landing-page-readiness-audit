@@ -138,7 +138,7 @@
     <h1>Google Ads / Monetization Readiness</h1>
     <div class="url">https://lobangnow.com/</div>
     <div class="meta-row">
-      <span>📅 April 16, 2026 at 10:24 PM</span>
+      <span>📅 April 16, 2026 at 10:32 PM</span>
       <span>🔦 Lighthouse 12.8.2</span>
       <span>🎭 Playwright probe</span>
       <span>📋 Stock CLI — no Publisher Ads plugin</span>
@@ -146,10 +146,10 @@
   </div>
 
   <!-- Verdict -->
-  <div class="verdict verdict-fail">
-    <div class="verdict-badge">✗ Not Ready</div>
-    <h2>Not ready</h2>
-    <p>Performance 31/100 with weak lab vitals — treat as revenue/CRO risk until improved. Stock Lighthouse + Playwright only — the deprecated npm Publisher Ads plugin is not used. Monetization readiness requires confirming GPT/ad traffic on representative URLs.</p>
+  <div class="verdict verdict-review">
+    <div class="verdict-badge">⟳ Review Needed</div>
+    <h2>Needs manual review</h2>
+    <p>Performance 62/100 but no GPT/ad-signature requests seen in Playwright — retest a monetized page. Stock Lighthouse + Playwright only — the deprecated npm Publisher Ads plugin is not used. Monetization readiness requires confirming GPT/ad traffic on representative URLs.</p>
   </div>
 
   <!-- Gauges -->
@@ -158,24 +158,24 @@
     <div class="gauge">
       <svg viewBox="0 0 120 120" width="120" height="120">
         <circle cx="60" cy="60" r="46" fill="none" stroke="#1a1a2e" stroke-width="8"/>
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#ff4e42" stroke-width="8"
-          stroke-dasharray="289.02652413026095" stroke-dashoffset="199.42830164988004"
+        <circle cx="60" cy="60" r="46" fill="none" stroke="#ffa400" stroke-width="8"
+          stroke-dasharray="289.02652413026095" stroke-dashoffset="109.83007916949916"
           stroke-linecap="round" transform="rotate(-90 60 60)"
           style="transition:stroke-dashoffset .8s ease"/>
       </svg>
-      <div class="gauge-val" style="color:#ff4e42">31</div>
+      <div class="gauge-val" style="color:#ffa400">62</div>
       <div class="gauge-label">Performance</div>
     </div>
     
     <div class="gauge">
       <svg viewBox="0 0 120 120" width="120" height="120">
         <circle cx="60" cy="60" r="46" fill="none" stroke="#1a1a2e" stroke-width="8"/>
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#ffa400" stroke-width="8"
-          stroke-dasharray="289.02652413026095" stroke-dashoffset="40.463713378236534"
+        <circle cx="60" cy="60" r="46" fill="none" stroke="#0cce6b" stroke-width="8"
+          stroke-dasharray="289.02652413026095" stroke-dashoffset="0"
           stroke-linecap="round" transform="rotate(-90 60 60)"
           style="transition:stroke-dashoffset .8s ease"/>
       </svg>
-      <div class="gauge-val" style="color:#ffa400">86</div>
+      <div class="gauge-val" style="color:#0cce6b">100</div>
       <div class="gauge-label">Accessibility</div>
     </div>
     
@@ -183,11 +183,11 @@
       <svg viewBox="0 0 120 120" width="120" height="120">
         <circle cx="60" cy="60" r="46" fill="none" stroke="#1a1a2e" stroke-width="8"/>
         <circle cx="60" cy="60" r="46" fill="none" stroke="#0cce6b" stroke-width="8"
-          stroke-dasharray="289.02652413026095" stroke-dashoffset="11.561060965210448"
+          stroke-dasharray="289.02652413026095" stroke-dashoffset="20.231856689118253"
           stroke-linecap="round" transform="rotate(-90 60 60)"
           style="transition:stroke-dashoffset .8s ease"/>
       </svg>
-      <div class="gauge-val" style="color:#0cce6b">96</div>
+      <div class="gauge-val" style="color:#0cce6b">93</div>
       <div class="gauge-label">Best Practices</div>
     </div>
     
@@ -210,15 +210,15 @@
     <div class="vitals">
       <div class="vital vital-poor">
     <span class="vital-label">LCP</span>
-    <span class="vital-value">6.2 s</span>
+    <span class="vital-value">6.1 s</span>
   </div>
       <div class="vital vital-good">
     <span class="vital-label">CLS</span>
     <span class="vital-value">0</span>
   </div>
-      <div class="vital vital-poor">
+      <div class="vital vital-needs-work">
     <span class="vital-label">TBT</span>
-    <span class="vital-value">4,270 ms</span>
+    <span class="vital-value">260 ms</span>
   </div>
       <div class="vital vital-na">
     <span class="vital-label">INP</span>
@@ -231,9 +231,9 @@
   <div class="section">
     <div class="section-title">CRO Priority Order <span class="tag">This run</span></div>
     <ol class="priorities">
-      <li>Fix Performance (31/100): LCP 6.2 s, TBT 4,270 ms — reduces bounce and lost impressions.</li>
+      <li>Fix Performance (62/100): LCP 6.1 s, TBT 260 ms — reduces bounce and lost impressions.</li>
       <li>Confirm ads: Playwright saw 0 ad-pattern requests; GPT-like traffic not detected — test deal/article routes if homepage is light on ads.</li>
-      <li>Accessibility (86/100) and trust signals — secondary to speed + monetization path.</li>
+      <li>Accessibility (100/100) and trust signals — secondary to speed + monetization path.</li>
       <li>SEO (100/100) — maintain while executing priorities above.</li>
     </ol>
   </div>
@@ -245,16 +245,16 @@
       <table>
         <thead><tr><th>Audit</th><th>Score</th><th>Detail</th></tr></thead>
         <tbody>
-          <tr><td>Max Potential First Input Delay</td><td class="score-bad">0</td><td>1,770 ms</td></tr>
-          <tr><td>Reduce initial server response time</td><td class="score-bad">0</td><td>Root document took 680 ms</td></tr>
-          <tr><td>Minimize main-thread work</td><td class="score-bad">0</td><td>16.6 s</td></tr>
-          <tr><td>Reduce JavaScript execution time</td><td class="score-bad">0</td><td>10.4 s</td></tr>
-          <tr><td>Reduce the impact of third-party code</td><td class="score-bad">0</td><td>Third-party code blocked the main thread for 990 ms</td></tr>
-          <tr><td>Largest Contentful Paint element</td><td class="score-bad">0</td><td>6,240 ms</td></tr>
+          <tr><td>Browser errors were logged to the console</td><td class="score-bad">0</td><td></td></tr>
+          <tr><td>Reduce initial server response time</td><td class="score-bad">0</td><td>Root document took 780 ms</td></tr>
           <tr><td>Missing source maps for large first-party JavaScript</td><td class="score-bad">0</td><td></td></tr>
-          <tr><td>Buttons do not have an accessible name</td><td class="score-bad">0</td><td></td></tr>
-          <tr><td>Background and foreground colors do not have a sufficient contrast ratio.</td><td class="score-bad">0</td><td></td></tr>
-          <tr><td>Eliminate render-blocking resources</td><td class="score-bad">0</td><td>Est savings of 820 ms</td></tr>
+          <tr><td>Eliminate render-blocking resources</td><td class="score-bad">0</td><td>Est savings of 770 ms</td></tr>
+          <tr><td>Reduce unused JavaScript</td><td class="score-bad">0</td><td>Est savings of 225 KiB</td></tr>
+          <tr><td>Charset declaration is missing or occurs too late in the HTML</td><td class="score-bad">0</td><td></td></tr>
+          <tr><td>Document request latency</td><td class="score-bad">0</td><td>Est savings of 680 ms</td></tr>
+          <tr><td>Network dependency tree</td><td class="score-bad">0</td><td></td></tr>
+          <tr><td>Render blocking requests</td><td class="score-bad">0</td><td>Est savings of 570 ms</td></tr>
+          <tr><td>Largest Contentful Paint</td><td class="score-bad">12</td><td>6.1 s</td></tr>
 
         </tbody>
       </table>
@@ -350,26 +350,108 @@
 
   <!-- Conversion Ops -->
   <div class="section">
-    <div class="section-title">Conversion Ops — 8-Dimension CRO <span class="tag">Eric Siu / ai-marketing-skills</span></div>
-    <p style="font-size:.82rem;color:var(--text3);margin-bottom:.5rem">
-      This report does not execute <code style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--purple)">cro_audit.py</code>. Run separately from
-      <a href="https://github.com/ericosiu/ai-marketing-skills/tree/main/conversion-ops" style="color:var(--blue);text-decoration:none">conversion-ops</a> (MIT):
-    </p>
-    <pre style="background:var(--surface2);padding:.75rem 1rem;border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text2);overflow-x:auto;border:1px solid var(--border);margin-bottom:1rem">python cro_audit.py --url https://lobangnow.com/ --industry general --json</pre>
+    <div class="section-title">Conversion Ops — 8-Dimension CRO <span class="tag">F — 39/100</span></div>
+
+    <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
+      
+    <div class="gauge">
+      <svg viewBox="0 0 120 120" width="120" height="120">
+        <circle cx="60" cy="60" r="46" fill="none" stroke="#1a1a2e" stroke-width="8"/>
+        <circle cx="60" cy="60" r="46" fill="none" stroke="#ff4e42" stroke-width="8"
+          stroke-dasharray="289.02652413026095" stroke-dashoffset="176.30617971945918"
+          stroke-linecap="round" transform="rotate(-90 60 60)"
+          style="transition:stroke-dashoffset .8s ease"/>
+      </svg>
+      <div class="gauge-val" style="color:#ff4e42">39</div>
+      <div class="gauge-label">CRO Score</div>
+    </div>
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:1.1rem;font-weight:700;margin-bottom:.25rem">Overall: 39/100 <span style="color:#ff4e42">(F)</span></div>
+        <div style="font-size:.82rem;color:var(--text3)">
+          Industry: ecommerce —
+          vs avg (58): <span style="color:var(--red)">↓19 pts</span>,
+          vs top quartile (74): <span style="color:var(--red)">↓35 pts</span>
+        </div>
+      </div>
+    </div>
+
     <div style="padding:0 .25rem">
       <div class="dim-row" style="padding-bottom:.4rem;margin-bottom:.35rem;border-bottom:1px solid var(--border2)">
         <div class="dim-name" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600">Dimension</div>
-        <div class="dim-note" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600">Coverage</div>
+        <div style="width:60px;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600;text-align:center">Score</div>
+        <div class="dim-note" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600">Key finding</div>
       </div>
-      <div class="dim-row"><div class="dim-name">Headline Clarity</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
-      <div class="dim-row"><div class="dim-name">CTA Visibility</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
-      <div class="dim-row"><div class="dim-name">Social Proof</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
-      <div class="dim-row"><div class="dim-name">Urgency</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
-      <div class="dim-row"><div class="dim-name">Trust Signals</div><div class="dim-note"><span class="dim-badge dim-overlap">Partial overlap</span> Best Practices touches this</div></div>
-      <div class="dim-row"><div class="dim-name">Form Friction</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
-      <div class="dim-row"><div class="dim-name">Mobile Responsiveness</div><div class="dim-note"><span class="dim-badge dim-overlap">Partial overlap</span> Lab + A11y partially cover</div></div>
-      <div class="dim-row"><div class="dim-name">Page Speed Indicators</div><div class="dim-note"><span class="dim-badge dim-lh">Lighthouse</span> Lab perf is authoritative here</div></div>
+      <div class="dim-row">
+        <div class="dim-name">Headline Clarity</div>
+        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ff4e42">20</div>
+        <div class="dim-note" style="font-size:.78rem">No H1 tag found on the page</div>
+      </div>
+      <div class="dim-row">
+        <div class="dim-name">CTA Visibility</div>
+        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ff4e42">15</div>
+        <div class="dim-note" style="font-size:.78rem">No recognizable CTA buttons/links found</div>
+      </div>
+      <div class="dim-row">
+        <div class="dim-name">Social Proof</div>
+        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ff4e42">30</div>
+        <div class="dim-note" style="font-size:.78rem"></div>
+      </div>
+      <div class="dim-row">
+        <div class="dim-name">Urgency</div>
+        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ff4e42">40</div>
+        <div class="dim-note" style="font-size:.78rem">No urgency/scarcity elements detected</div>
+      </div>
+      <div class="dim-row">
+        <div class="dim-name">Trust Signals</div>
+        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ff4e42">35</div>
+        <div class="dim-note" style="font-size:.78rem"></div>
+      </div>
+      <div class="dim-row">
+        <div class="dim-name">Form Friction</div>
+        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ffa400">50</div>
+        <div class="dim-note" style="font-size:.78rem">No form or clear conversion mechanism found</div>
+      </div>
+      <div class="dim-row">
+        <div class="dim-name">Mobile Responsiveness</div>
+        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ffa400">85</div>
+        <div class="dim-note" style="font-size:.78rem">Viewport meta tag found: width=device-width, initial-scale=1, maximum-scale=5, user-s</div>
+      </div>
+      <div class="dim-row">
+        <div class="dim-name">Page Speed Indicators</div>
+        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ffa400">70</div>
+        <div class="dim-note" style="font-size:.78rem">HTML size: 3 KB</div>
+      </div>
     </div>
+
+
+    <div style="margin-top:1.25rem">
+      <div style="font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.04em">Top CRO fixes</div>
+      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
+        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
+        <span><strong style="color:var(--text)">CTA Visibility</strong> — Add clear call-to-action buttons with action-oriented text (e.g., 'Get Started Free', 'Book a Demo')</span>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
+        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
+        <span><strong style="color:var(--text)">Headline Clarity</strong> — Add a clear H1 headline that states your primary value proposition</span>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
+        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
+        <span><strong style="color:var(--text)">Headline Clarity</strong> — Consider adding a prominent hero section with headline + subheadline + CTA</span>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
+        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
+        <span><strong style="color:var(--text)">Social Proof</strong> — Add customer testimonials with real names, titles, and photos</span>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
+        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
+        <span><strong style="color:var(--text)">Social Proof</strong> — Add a logo bar showing recognizable client/partner brands</span>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
+        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
+        <span><strong style="color:var(--text)">Social Proof</strong> — Add specific numbers (e.g., '10,000+ customers') to quantify trust</span>
+      </div>
+    </div>
+
   </div>
 
   <!-- Evidence -->
@@ -381,6 +463,7 @@
         <li>📄 <code>reports/latest-lh.report.json</code> — Lighthouse JSON</li>
         <li>📄 <code>reports/latest-lh.report.html</code> — Lighthouse HTML</li>
         <li>📄 <code>reports/latest-probe.json</code> — Playwright probe JSON</li>
+        <li>📄 <code>reports/latest-cro.json</code> — CRO audit JSON (conversion-ops)</li>
       </ul>
     </div>
   </div>
