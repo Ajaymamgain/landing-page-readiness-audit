@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 /**
- * Build ONE consolidated HTML report from Lighthouse LHR + Playwright probe JSON.
- * Does not use lighthouse-plugin-publisher-ads; includes a manual checklist aligned
- * with googleads/publisher-ads-lighthouse-plugin audit *concepts*.
+ * Build ONE polished HTML report from Lighthouse LHR + Playwright probe JSON.
+ * Features: SVG gauge rings, traffic-light vitals, verdict banner, print CSS.
  *
  * Usage: node scripts/generate-unified-report.mjs <lhr.json> <probe.json> [out.html]
  */
@@ -24,17 +23,17 @@ if (!lhrPath || !probePath) {
 
 function esc(s) {
   if (s == null) return '';
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-const lhr = JSON.parse(readFileSync(lhrPath, 'utf8'));
-const probe = JSON.parse(readFileSync(probePath, 'utf8'));
+let lhr, probe;
+try { lhr = JSON.parse(readFileSync(lhrPath, 'utf8')); }
+catch (e) { console.error(`Failed to read/parse Lighthouse JSON at ${lhrPath}: ${e.message}`); process.exit(1); }
+try { probe = JSON.parse(readFileSync(probePath, 'utf8')); }
+catch (e) { console.error(`Failed to read/parse Playwright probe JSON at ${probePath}: ${e.message}`); process.exit(1); }
 
-const cat = (k) => (lhr.categories[k]?.score != null ? Math.round(lhr.categories[k].score * 100) : '—');
+// --- Data extraction ---
+const cat = (k) => (lhr.categories[k]?.score != null ? Math.round(lhr.categories[k].score * 100) : null);
 const perf = cat('performance');
 const a11y = cat('accessibility');
 const bp = cat('best-practices');
@@ -46,184 +45,385 @@ const cls = A('cumulative-layout-shift');
 const tbt = A('total-blocking-time');
 const inp = A('interaction-to-next-paint');
 
-const lcpDisp = esc(lcp?.displayValue ?? '—');
-const clsDisp = esc(cls?.displayValue ?? '—');
-const tbtDisp = esc(tbt?.displayValue ?? '—');
-const inpDisp = inp?.displayValue ? esc(inp.displayValue) : 'Not in this LHR';
+const lcpVal = lcp?.numericValue;
+const clsVal = cls?.numericValue;
+const tbtVal = tbt?.numericValue;
+
+const lcpDisp = lcp?.displayValue ?? '—';
+const clsDisp = cls?.displayValue ?? '—';
+const tbtDisp = tbt?.displayValue ?? '—';
+const inpDisp = inp?.displayValue ?? 'N/A';
+
+function vitalRating(metric, val) {
+  if (val == null) return 'na';
+  if (metric === 'lcp') return val <= 2500 ? 'good' : val <= 4000 ? 'needs-work' : 'poor';
+  if (metric === 'cls') return val <= 0.1 ? 'good' : val <= 0.25 ? 'needs-work' : 'poor';
+  if (metric === 'tbt') return val <= 200 ? 'good' : val <= 600 ? 'needs-work' : 'poor';
+  return 'na';
+}
 
 const worst = [];
 for (const [id, au] of Object.entries(lhr.audits)) {
-  if (!au || au.score == null) continue;
-  if (typeof au.score !== 'number') continue;
-  if (au.score >= 0.9) continue;
+  if (!au || au.score == null || typeof au.score !== 'number' || au.score >= 0.9) continue;
   worst.push({ id, title: au.title, score: au.score, dv: au.displayValue || '' });
 }
 worst.sort((a, b) => a.score - b.score);
-const topWorst = worst.slice(0, 12);
+const topWorst = worst.slice(0, 10);
 
 const probeAdCount = probe.adRelatedRequestCount ?? 0;
 const gptLikely = probe.interpretation?.gptLikelyLoaded === true;
 const hasErr = probe.interpretation?.hasConsoleErrors === true;
 
+// --- Verdict ---
+let verdictLevel = 'review'; // 'pass' | 'fail' | 'review'
 let verdict = 'Needs manual review';
-let verdictDetail =
-  'Stock Lighthouse + Playwright only — the deprecated npm Publisher Ads plugin is not used. Monetization readiness requires confirming GPT/ad traffic on representative URLs.';
+let verdictDetail = 'Stock Lighthouse + Playwright only — the deprecated npm Publisher Ads plugin is not used. Monetization readiness requires confirming GPT/ad traffic on representative URLs.';
 
 if (typeof perf === 'number' && perf < 50) {
-  verdict = 'Not ready (performance)';
-  verdictDetail =
-    `Performance ${perf}/100 with weak lab vitals — treat as revenue/CRO risk until improved. ${verdictDetail}`;
+  verdictLevel = 'fail';
+  verdict = 'Not ready';
+  verdictDetail = `Performance ${perf}/100 with weak lab vitals — treat as revenue/CRO risk until improved. ${verdictDetail}`;
 } else if (typeof perf === 'number' && perf >= 90 && probeAdCount > 0 && gptLikely) {
-  verdict = 'Likely on track (lab + tags observed)';
-  verdictDetail =
-    'Lab scores acceptable and ad-related requests were observed — still validate field data and revenue KPIs.';
-} else if (typeof perf === 'number' && perf >= 75 && !gptLikely) {
+  verdictLevel = 'pass';
+  verdict = 'Likely on track';
+  verdictDetail = 'Lab scores acceptable and ad-related requests were observed — still validate field data and revenue KPIs.';
+} else if (typeof perf === 'number' && perf >= 50 && !gptLikely) {
+  verdictLevel = 'review';
   verdict = 'Needs manual review';
-  verdictDetail =
-    `Performance moderate (${perf}/100) but no GPT/ad-signature requests seen in Playwright — retest a monetized page. ${verdictDetail}`;
+  verdictDetail = `Performance ${perf}/100 but no GPT/ad-signature requests seen in Playwright — retest a monetized page. ${verdictDetail}`;
 }
 
-/** Topics mirroring Publisher Ads plugin audit docs — manual verification only. */
 const PUB_ADS_CONCEPTS = [
-  { topic: 'Tag load & async loading', refs: 'tag-load-time, async-ad-tags' },
-  { topic: 'Ad request latency & waterfall', refs: 'ad-request-from-page-start, ad-request-critical-path' },
-  { topic: 'Header bidding & parallel bids', refs: 'serial-header-bidding, gpt-bids-parallel' },
-  { topic: 'Layout shift around ads (CLS)', refs: 'cumulative-ad-shift' },
-  { topic: 'Main-thread / ad JS blocking', refs: 'total-ad-blocking-time, ad-blocking-tasks' },
-  { topic: 'GPT source, HTTPS, static loaders', refs: 'loads-gpt-from-official-source, loads-ad-tag-over-https, script-injected-tags' },
-  { topic: 'GPT errors & deprecated APIs', refs: 'gpt-errors-overall, deprecated-api-usage' },
-  { topic: 'Slot density & viewport', refs: 'viewport-ad-density, ads-in-viewport, ad-top-of-viewport' },
+  { topic: 'Tag load & async loading', refs: 'tag-load-time, async-ad-tags', icon: '⚡' },
+  { topic: 'Ad request latency & waterfall', refs: 'ad-request-from-page-start, ad-request-critical-path', icon: '🔗' },
+  { topic: 'Header bidding & parallel bids', refs: 'serial-header-bidding, gpt-bids-parallel', icon: '🔀' },
+  { topic: 'Layout shift around ads', refs: 'cumulative-ad-shift', icon: '📐' },
+  { topic: 'Main-thread / ad JS blocking', refs: 'total-ad-blocking-time, ad-blocking-tasks', icon: '🧱' },
+  { topic: 'GPT source, HTTPS, static loaders', refs: 'loads-gpt-from-official-source, loads-ad-tag-over-https, script-injected-tags', icon: '🔒' },
+  { topic: 'GPT errors & deprecated APIs', refs: 'gpt-errors-overall, deprecated-api-usage', icon: '⚠️' },
+  { topic: 'Slot density & viewport', refs: 'viewport-ad-density, ads-in-viewport, ad-top-of-viewport', icon: '📊' },
 ];
 
-const cro = [
-  `P0 — Fix Performance (${perf}/100): LCP ${lcpDisp}, TBT ${tbtDisp} — reduces bounce and lost impressions.`,
-  `P1 — Confirm ads: Playwright saw ${probeAdCount} ad-pattern requests; GPT-like traffic ${gptLikely ? 'detected' : 'not detected'} — test deal/article routes if homepage is light on ads.`,
-  `P2 — Accessibility (${a11y}/100) and trust signals — secondary to speed + monetization path.`,
-  `P3 — SEO (${seo}/100) — maintain while executing P0/P1.`,
-];
+// --- SVG gauge helpers ---
+function scoreColor(score) {
+  if (score == null) return '#555';
+  if (score >= 90) return '#0cce6b';
+  if (score >= 50) return '#ffa400';
+  return '#ff4e42';
+}
+
+function gaugeRing(score, label) {
+  const r = 46;
+  const circ = 2 * Math.PI * r;
+  const pct = score != null ? score / 100 : 0;
+  const offset = circ * (1 - pct);
+  const color = scoreColor(score);
+  const display = score != null ? score : '—';
+  return `
+    <div class="gauge">
+      <svg viewBox="0 0 120 120" width="120" height="120">
+        <circle cx="60" cy="60" r="${r}" fill="none" stroke="#1a1a2e" stroke-width="8"/>
+        <circle cx="60" cy="60" r="${r}" fill="none" stroke="${color}" stroke-width="8"
+          stroke-dasharray="${circ}" stroke-dashoffset="${offset}"
+          stroke-linecap="round" transform="rotate(-90 60 60)"
+          style="transition:stroke-dashoffset .8s ease"/>
+      </svg>
+      <div class="gauge-val" style="color:${color}">${display}</div>
+      <div class="gauge-label">${esc(label)}</div>
+    </div>`;
+}
+
+function vitalPill(label, value, rating) {
+  return `<div class="vital vital-${rating}">
+    <span class="vital-label">${esc(label)}</span>
+    <span class="vital-value">${esc(value)}</span>
+  </div>`;
+}
+
+const dateHuman = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
 const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Unified readiness report — ${esc(lhr.finalUrl || probe.requestedUrl)}</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Readiness Report — ${esc(lhr.finalUrl || probe.requestedUrl)}</title>
   <style>
-    :root { --bg:#070707; --card:#111; --text:#e5e5e5; --muted:#a3a3a3; --border:#262626; --accent:#22c55e; --bad:#f87171; --warn:#fbbf24; }
-    body { margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
-    .wrap { max-width: 920px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
-    h1 { font-size: 1.5rem; margin: 0 0 0.5rem; }
-    .meta { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.75rem; }
-    h2 { font-size: 1.05rem; margin: 2rem 0 0.65rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 0.5rem; margin: 1rem 0; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 0.85rem; }
-    .card span { display:block; font-size:0.62rem; text-transform:uppercase; color:var(--muted); }
-    .card strong { font-size: 1.4rem; }
-    .bad { color: var(--bad); } .warn { color: var(--warn); }
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.5rem 0; }
-    th, td { border: 1px solid var(--border); padding: 0.45rem 0.5rem; text-align: left; vertical-align: top; }
-    th { background:#141414; color:var(--muted); font-size:0.72rem; text-transform:uppercase; }
-    .box { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; margin: 1rem 0; }
-    code { color: #86efac; font-size: 0.82rem; }
-    ul { margin: 0.4rem 0; padding-left: 1.2rem; }
-    .footnotes { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--muted); }
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --bg:#08090d;--surface:#0f1117;--surface2:#161822;--surface3:#1c1f2e;
+      --border:#232640;--border2:#2d3154;
+      --text:#e8eaf0;--text2:#a0a5c0;--text3:#6b7094;
+      --green:#0cce6b;--amber:#ffa400;--red:#ff4e42;
+      --blue:#4f8ff7;--purple:#a78bfa;
+      --green-bg:rgba(12,206,107,.08);--amber-bg:rgba(255,164,0,.08);--red-bg:rgba(255,78,66,.08);
+      --radius:12px;--radius-sm:8px;
+    }
+
+    body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+    .page{max-width:1000px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+
+    /* --- Header --- */
+    .header{text-align:center;padding:2rem 0 2.5rem;border-bottom:1px solid var(--border)}
+    .header h1{font-size:1.75rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.5rem}
+    .header .url{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--blue);word-break:break-all;margin-bottom:1rem}
+    .header .meta-row{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;font-size:.78rem;color:var(--text3)}
+    .header .meta-row span{display:inline-flex;align-items:center;gap:.35rem}
+
+    /* --- Verdict banner --- */
+    .verdict{margin:2rem 0;padding:1.5rem 2rem;border-radius:var(--radius);position:relative;overflow:hidden}
+    .verdict::before{content:'';position:absolute;inset:0;border-radius:var(--radius);pointer-events:none}
+    .verdict-pass{background:var(--green-bg);border:1px solid rgba(12,206,107,.25)}
+    .verdict-pass::before{box-shadow:inset 0 1px 0 rgba(12,206,107,.15)}
+    .verdict-fail{background:var(--red-bg);border:1px solid rgba(255,78,66,.25)}
+    .verdict-fail::before{box-shadow:inset 0 1px 0 rgba(255,78,66,.15)}
+    .verdict-review{background:var(--amber-bg);border:1px solid rgba(255,164,0,.25)}
+    .verdict-review::before{box-shadow:inset 0 1px 0 rgba(255,164,0,.15)}
+    .verdict-badge{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:.3rem .7rem;border-radius:100px;margin-bottom:.75rem}
+    .verdict-pass .verdict-badge{background:rgba(12,206,107,.15);color:var(--green)}
+    .verdict-fail .verdict-badge{background:rgba(255,78,66,.15);color:var(--red)}
+    .verdict-review .verdict-badge{background:rgba(255,164,0,.15);color:var(--amber)}
+    .verdict h2{font-size:1.35rem;font-weight:700;margin-bottom:.5rem}
+    .verdict-pass h2{color:var(--green)}
+    .verdict-fail h2{color:var(--red)}
+    .verdict-review h2{color:var(--amber)}
+    .verdict p{font-size:.88rem;color:var(--text2);line-height:1.65}
+
+    /* --- Gauges --- */
+    .gauges{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin:2.5rem 0}
+    .gauge{position:relative;text-align:center;width:120px}
+    .gauge svg{display:block}
+    .gauge-val{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:1.7rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+    .gauge-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-top:.35rem;font-weight:500}
+
+    /* --- Vitals --- */
+    .vitals{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:1.5rem 0 2.5rem}
+    .vital{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.1rem;border-radius:var(--radius-sm);border:1px solid var(--border)}
+    .vital-label{font-size:.78rem;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+    .vital-value{font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:700}
+    .vital-good{background:var(--green-bg);border-color:rgba(12,206,107,.2)}.vital-good .vital-value{color:var(--green)}
+    .vital-needs-work{background:var(--amber-bg);border-color:rgba(255,164,0,.2)}.vital-needs-work .vital-value{color:var(--amber)}
+    .vital-poor{background:var(--red-bg);border-color:rgba(255,78,66,.2)}.vital-poor .vital-value{color:var(--red)}
+    .vital-na{background:var(--surface)}.vital-na .vital-value{color:var(--text3)}
+
+    /* --- Sections --- */
+    .section{margin-top:2.5rem}
+    .section-title{font-size:1rem;font-weight:700;color:var(--text);padding-bottom:.5rem;border-bottom:1px solid var(--border);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+    .section-title .tag{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:.2rem .55rem;border-radius:100px;background:var(--surface3);color:var(--text3)}
+
+    /* --- Priority list --- */
+    .priorities{list-style:none;counter-reset:pri}
+    .priorities li{counter-increment:pri;display:flex;gap:.85rem;align-items:flex-start;padding:.85rem 1rem;border-radius:var(--radius-sm);margin-bottom:.5rem;background:var(--surface);border:1px solid var(--border);font-size:.85rem;color:var(--text2);line-height:1.5}
+    .priorities li::before{content:'P' counter(pri);flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--surface3);color:var(--text3)}
+    .priorities li:first-child::before{background:rgba(255,78,66,.12);color:var(--red)}
+    .priorities li:nth-child(2)::before{background:rgba(255,164,0,.12);color:var(--amber)}
+
+    /* --- Tables --- */
+    .table-wrap{overflow-x:auto;margin:.75rem 0;border-radius:var(--radius-sm);border:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse;font-size:.82rem}
+    th{background:var(--surface2);color:var(--text3);font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:.65rem .85rem;text-align:left}
+    td{padding:.6rem .85rem;border-top:1px solid var(--border);color:var(--text2);vertical-align:top}
+    tr:hover td{background:rgba(255,255,255,.015)}
+    .score-bad{color:var(--red);font-weight:600}
+    .score-warn{color:var(--amber);font-weight:600}
+    .score-ok{color:var(--green);font-weight:600}
+
+    /* --- Checklist (Publisher Ads concepts) --- */
+    .checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.6rem;margin:.75rem 0}
+    .check-item{display:flex;gap:.65rem;padding:.75rem .9rem;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);font-size:.82rem;align-items:flex-start}
+    .check-icon{font-size:1rem;flex-shrink:0;line-height:1.2}
+    .check-body{flex:1}
+    .check-topic{font-weight:600;color:var(--text);margin-bottom:.15rem}
+    .check-refs{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text3);word-break:break-all}
+
+    /* --- Playwright signals --- */
+    .signal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6rem;margin:.75rem 0}
+    .signal{padding:.85rem 1rem;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border)}
+    .signal-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);margin-bottom:.25rem;font-weight:500}
+    .signal-value{font-size:1rem;font-weight:600}
+    .signal-yes{color:var(--green)}.signal-no{color:var(--text3)}.signal-warn{color:var(--amber)}
+
+    /* --- CRO dimension table --- */
+    .dim-row{display:flex;gap:.5rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border)}
+    .dim-row:last-child{border-bottom:none}
+    .dim-name{flex:1;font-size:.82rem;font-weight:500}
+    .dim-note{flex:1.5;font-size:.78rem;color:var(--text3)}
+    .dim-badge{font-size:.62rem;font-weight:600;padding:.15rem .45rem;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+    .dim-cro{background:rgba(167,139,250,.1);color:var(--purple)}
+    .dim-overlap{background:rgba(79,143,247,.1);color:var(--blue)}
+    .dim-lh{background:rgba(12,206,107,.1);color:var(--green)}
+
+    /* --- Evidence --- */
+    .evidence{margin-top:1.25rem;padding:1rem 1.25rem;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border)}
+    .evidence code{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--blue)}
+    .evidence li{margin-bottom:.35rem;font-size:.82rem;color:var(--text2)}
+
+    /* --- Footer --- */
+    .footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);text-align:center;font-size:.75rem;color:var(--text3);line-height:1.7}
+
+    /* --- Print --- */
+    @media print{
+      :root{--bg:#fff;--surface:#f8f9fa;--surface2:#f0f1f4;--surface3:#e8eaf0;--border:#dee0e8;--border2:#ccc;--text:#1a1a2e;--text2:#444;--text3:#777;--green-bg:#e6f9ef;--amber-bg:#fff5e0;--red-bg:#ffeae8}
+      body{background:#fff;color:#1a1a2e;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .page{max-width:100%;padding:1rem}
+      .verdict,.vital,.check-item,.signal,.priorities li,.evidence{break-inside:avoid}
+      .section{break-inside:avoid}
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Unified Google Ads / monetization readiness report</h1>
-    <p class="meta">
-      <strong>Final URL:</strong> ${esc(lhr.finalUrl || '')}<br/>
-      <strong>Requested:</strong> ${esc(probe.requestedUrl || '')}<br/>
-      <strong>Generated:</strong> ${esc(new Date().toISOString())}<br/>
-      <strong>Lighthouse:</strong> ${esc(lhr.lighthouseVersion || '?')} (stock CLI, no Publisher Ads npm plugin)<br/>
-      <strong>Playwright:</strong> network + console probe (see JSON paths below)
-    </p>
+<div class="page">
 
-    <h2>Single verdict</h2>
-    <div class="box">
-      <p><strong>${esc(verdict)}</strong></p>
-      <p>${esc(verdictDetail)}</p>
-    </div>
-
-    <h2>CRO — priority order (this run)</h2>
-    <ol>
-${cro.map((c) => `      <li>${esc(c)}</li>`).join('\n')}
-    </ol>
-
-    <h2>Conversion Ops — 8-dimension CRO (Eric Siu / ai-marketing-skills)</h2>
-    <p>
-      This HTML does <strong>not</strong> execute <code>cro_audit.py</code>. For a scored landing-page CRO pass aligned with
-      <a href="https://github.com/ericosiu/ai-marketing-skills/tree/main/conversion-ops" style="color:var(--accent);">conversion-ops</a>
-      (MIT License, © 2026 Single Grain), run separately and merge findings into your stakeholder deck:
-    </p>
-    <pre style="background:#141414;padding:0.85rem;border-radius:8px;overflow:auto;font-size:0.8rem;">cd ai-marketing-skills/conversion-ops &amp;&amp; pip install -r requirements.txt
-python cro_audit.py --url ${esc(lhr.finalUrl || probe.requestedUrl || '')} --industry general --json</pre>
-    <table>
-      <tr><th>Dimension (0–100 each)</th><th>Notes vs this report</th></tr>
-      <tr><td>Headline Clarity</td><td>Not covered by Lighthouse — CRO tool</td></tr>
-      <tr><td>CTA Visibility</td><td>Not covered by Lighthouse — CRO tool</td></tr>
-      <tr><td>Social Proof</td><td>Not covered by Lighthouse — CRO tool</td></tr>
-      <tr><td>Urgency</td><td>Not covered by Lighthouse — CRO tool</td></tr>
-      <tr><td>Trust Signals</td><td>Partial overlap with Best Practices — CRO tool is copy/UX focused</td></tr>
-      <tr><td>Form Friction</td><td>Not covered by Lighthouse — CRO tool</td></tr>
-      <tr><td>Mobile Responsiveness</td><td>Overlaps lab + A11y partly — CRO adds heuristics</td></tr>
-      <tr><td>Page Speed Indicators</td><td><strong>Lighthouse below is authoritative</strong> for lab perf; CRO uses lighter HTML heuristics</td></tr>
-    </table>
-    <p style="font-size:0.82rem;color:var(--muted);">Cursor skills: <code>~/.cursor/skills/conversion-ops/SKILL.md</code> and <code>google-ads-readiness-modern/reference/conversion-ops.md</code></p>
-
-    <h2>Lighthouse — category scores (stock)</h2>
-    <div class="grid">
-      <div class="card"><span>Performance</span><strong class="${typeof perf === 'number' && perf < 50 ? 'bad' : ''}">${esc(perf)}</strong></div>
-      <div class="card"><span>Accessibility</span><strong class="${typeof a11y === 'number' && a11y < 90 ? 'warn' : ''}">${esc(a11y)}</strong></div>
-      <div class="card"><span>Best practices</span><strong>${esc(bp)}</strong></div>
-      <div class="card"><span>SEO</span><strong>${esc(seo)}</strong></div>
-    </div>
-
-    <h3>Core lab vitals (this run)</h3>
-    <table>
-      <tr><th>Metric</th><th>Value</th></tr>
-      <tr><td>LCP</td><td>${lcpDisp}</td></tr>
-      <tr><td>CLS</td><td>${clsDisp}</td></tr>
-      <tr><td>TBT</td><td>${tbtDisp}</td></tr>
-      <tr><td>INP</td><td>${inpDisp}</td></tr>
-    </table>
-
-    <h3>Lowest-scoring Lighthouse audits (sample)</h3>
-    <table>
-      <tr><th>Audit</th><th>Score</th><th>Display</th></tr>
-${topWorst.map((r) => `      <tr><td>${esc(r.title)}</td><td>${r.score.toFixed(2)}</td><td>${esc(r.dv)}</td></tr>`).join('\n')}
-    </table>
-
-    <h2>Playwright — real browser signals</h2>
-    <ul>
-      <li><strong>Ad-pattern HTTP requests:</strong> ${probeAdCount} (GPT/Google Ads URL heuristics)</li>
-      <li><strong>GPT-like load inferred:</strong> ${gptLikely ? 'yes' : 'no'}</li>
-      <li><strong>Console/page errors:</strong> ${hasErr ? 'yes' : 'none captured'}</li>
-      <li><strong>Page title:</strong> ${esc(probe.title || '')}</li>
-    </ul>
-
-    <h2>Publisher Ads plugin *concepts* (manual checklist)</h2>
-    <p>The npm <code>lighthouse-plugin-publisher-ads</code> is <strong>not</strong> executed here (incompatible with modern Lighthouse). Below is the same <em>conceptual</em> coverage the plugin docs describe — verify in DevTools / staging, not as automated scores:</p>
-    <table>
-      <tr><th>Theme</th><th>Related audit ids (reference)</th></tr>
-${PUB_ADS_CONCEPTS.map((r) => `      <tr><td>${esc(r.topic)}</td><td><code>${esc(r.refs)}</code></td></tr>`).join('\n')}
-    </table>
-    <p>Bundled markdown explainers: <code>~/.cursor/skills/publisher-ads-readiness/reference/audits/</code></p>
-
-    <h2>Evidence (this run only)</h2>
-    <p>This file is the <strong>only</strong> narrative report. Supporting machine files:</p>
-    <ul>
-      <li><code>${esc(lhrPath.replace(root + '/', ''))}</code> — Lighthouse JSON (LHR)</li>
-      <li><code>${esc(lhrPath.replace(/\.json$/, '.html').replace(root + '/', ''))}</code> — Lighthouse HTML</li>
-      <li><code>${esc(probePath.replace(root + '/', ''))}</code> — Playwright probe JSON</li>
-    </ul>
-
-    <div class="footnotes">
-      One report per run; regenerate by executing <code>npm run report -- &lt;url&gt;</code> from the project root.
-      Not affiliated with Google or the site owner. Lab data only unless you add RUM/CrUX separately.
+  <div class="header">
+    <h1>Google Ads / Monetization Readiness</h1>
+    <div class="url">${esc(lhr.finalUrl || probe.requestedUrl)}</div>
+    <div class="meta-row">
+      <span>📅 ${esc(dateHuman)}</span>
+      <span>🔦 Lighthouse ${esc(lhr.lighthouseVersion || '?')}</span>
+      <span>🎭 Playwright probe</span>
+      <span>📋 Stock CLI — no Publisher Ads plugin</span>
     </div>
   </div>
+
+  <!-- Verdict -->
+  <div class="verdict verdict-${verdictLevel}">
+    <div class="verdict-badge">${verdictLevel === 'pass' ? '✓ On Track' : verdictLevel === 'fail' ? '✗ Not Ready' : '⟳ Review Needed'}</div>
+    <h2>${esc(verdict)}</h2>
+    <p>${esc(verdictDetail)}</p>
+  </div>
+
+  <!-- Gauges -->
+  <div class="gauges">
+    ${gaugeRing(perf, 'Performance')}
+    ${gaugeRing(a11y, 'Accessibility')}
+    ${gaugeRing(bp, 'Best Practices')}
+    ${gaugeRing(seo, 'SEO')}
+  </div>
+
+  <!-- Core Web Vitals -->
+  <div class="section">
+    <div class="section-title">Core Web Vitals <span class="tag">Lab data</span></div>
+    <div class="vitals">
+      ${vitalPill('LCP', lcpDisp, vitalRating('lcp', lcpVal))}
+      ${vitalPill('CLS', clsDisp, vitalRating('cls', clsVal))}
+      ${vitalPill('TBT', tbtDisp, vitalRating('tbt', tbtVal))}
+      ${vitalPill('INP', inpDisp, 'na')}
+    </div>
+  </div>
+
+  <!-- CRO Priorities -->
+  <div class="section">
+    <div class="section-title">CRO Priority Order <span class="tag">This run</span></div>
+    <ol class="priorities">
+      <li>Fix Performance (${perf ?? '—'}/100): LCP ${esc(lcpDisp)}, TBT ${esc(tbtDisp)} — reduces bounce and lost impressions.</li>
+      <li>Confirm ads: Playwright saw ${probeAdCount} ad-pattern requests; GPT-like traffic ${gptLikely ? 'detected' : 'not detected'} — test deal/article routes if homepage is light on ads.</li>
+      <li>Accessibility (${a11y ?? '—'}/100) and trust signals — secondary to speed + monetization path.</li>
+      <li>SEO (${seo ?? '—'}/100) — maintain while executing priorities above.</li>
+    </ol>
+  </div>
+
+  <!-- Lowest-scoring audits -->
+  <div class="section">
+    <div class="section-title">Lowest-Scoring Audits <span class="tag">${topWorst.length} flagged</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Audit</th><th>Score</th><th>Detail</th></tr></thead>
+        <tbody>
+${topWorst.map((r) => {
+  const cls = r.score < 0.5 ? 'score-bad' : 'score-warn';
+  return `          <tr><td>${esc(r.title)}</td><td class="${cls}">${(r.score * 100).toFixed(0)}</td><td>${esc(r.dv)}</td></tr>`;
+}).join('\n')}
+${topWorst.length === 0 ? '          <tr><td colspan="3" style="text-align:center;color:var(--text3)">All audits scored ≥ 90 — looking good</td></tr>' : ''}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Playwright signals -->
+  <div class="section">
+    <div class="section-title">Playwright — Real Browser Signals</div>
+    <div class="signal-grid">
+      <div class="signal">
+        <div class="signal-label">Ad-pattern requests</div>
+        <div class="signal-value ${probeAdCount > 0 ? 'signal-yes' : 'signal-no'}">${probeAdCount}</div>
+      </div>
+      <div class="signal">
+        <div class="signal-label">GPT-like traffic</div>
+        <div class="signal-value ${gptLikely ? 'signal-yes' : 'signal-no'}">${gptLikely ? 'Detected' : 'Not detected'}</div>
+      </div>
+      <div class="signal">
+        <div class="signal-label">Console / page errors</div>
+        <div class="signal-value ${hasErr ? 'signal-warn' : 'signal-yes'}">${hasErr ? 'Errors found' : 'None'}</div>
+      </div>
+      <div class="signal">
+        <div class="signal-label">Page title</div>
+        <div class="signal-value" style="font-size:.82rem;font-weight:400;color:var(--text2)">${esc(probe.title || '—')}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Publisher Ads concepts -->
+  <div class="section">
+    <div class="section-title">Publisher Ads Audit Concepts <span class="tag">Manual checklist</span></div>
+    <p style="font-size:.82rem;color:var(--text3);margin-bottom:.75rem">The npm <code style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--purple)">lighthouse-plugin-publisher-ads</code> is not executed (incompatible with modern Lighthouse). Verify these themes in DevTools / staging:</p>
+    <div class="checklist">
+${PUB_ADS_CONCEPTS.map((c) => `      <div class="check-item">
+        <span class="check-icon">${c.icon}</span>
+        <div class="check-body">
+          <div class="check-topic">${esc(c.topic)}</div>
+          <div class="check-refs">${esc(c.refs)}</div>
+        </div>
+      </div>`).join('\n')}
+    </div>
+  </div>
+
+  <!-- Conversion Ops -->
+  <div class="section">
+    <div class="section-title">Conversion Ops — 8-Dimension CRO <span class="tag">Eric Siu / ai-marketing-skills</span></div>
+    <p style="font-size:.82rem;color:var(--text3);margin-bottom:.5rem">
+      This report does not execute <code style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--purple)">cro_audit.py</code>. Run separately from
+      <a href="https://github.com/ericosiu/ai-marketing-skills/tree/main/conversion-ops" style="color:var(--blue);text-decoration:none">conversion-ops</a> (MIT):
+    </p>
+    <pre style="background:var(--surface2);padding:.75rem 1rem;border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text2);overflow-x:auto;border:1px solid var(--border);margin-bottom:1rem">python cro_audit.py --url ${esc(lhr.finalUrl || probe.requestedUrl || '')} --industry general --json</pre>
+    <div style="padding:0 .25rem">
+      <div class="dim-row" style="padding-bottom:.4rem;margin-bottom:.35rem;border-bottom:1px solid var(--border2)">
+        <div class="dim-name" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600">Dimension</div>
+        <div class="dim-note" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600">Coverage</div>
+      </div>
+      <div class="dim-row"><div class="dim-name">Headline Clarity</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
+      <div class="dim-row"><div class="dim-name">CTA Visibility</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
+      <div class="dim-row"><div class="dim-name">Social Proof</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
+      <div class="dim-row"><div class="dim-name">Urgency</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
+      <div class="dim-row"><div class="dim-name">Trust Signals</div><div class="dim-note"><span class="dim-badge dim-overlap">Partial overlap</span> Best Practices touches this</div></div>
+      <div class="dim-row"><div class="dim-name">Form Friction</div><div class="dim-note"><span class="dim-badge dim-cro">CRO tool</span> Not covered by Lighthouse</div></div>
+      <div class="dim-row"><div class="dim-name">Mobile Responsiveness</div><div class="dim-note"><span class="dim-badge dim-overlap">Partial overlap</span> Lab + A11y partially cover</div></div>
+      <div class="dim-row"><div class="dim-name">Page Speed Indicators</div><div class="dim-note"><span class="dim-badge dim-lh">Lighthouse</span> Lab perf is authoritative here</div></div>
+    </div>
+  </div>
+
+  <!-- Evidence -->
+  <div class="section">
+    <div class="section-title">Evidence <span class="tag">This run</span></div>
+    <div class="evidence">
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:.65rem">This file is the only narrative report. Supporting machine files:</p>
+      <ul style="list-style:none;padding:0">
+        <li>📄 <code>${esc(lhrPath.replace(root + '/', ''))}</code> — Lighthouse JSON</li>
+        <li>📄 <code>${esc(lhrPath.replace(/\.json$/, '.html').replace(root + '/', ''))}</code> — Lighthouse HTML</li>
+        <li>📄 <code>${esc(probePath.replace(root + '/', ''))}</code> — Playwright probe JSON</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    One report per run — regenerate with <code style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--blue)">npm run report -- &lt;url&gt;</code><br/>
+    Not affiliated with Google or the site owner. Lab data only unless you add RUM/CrUX separately.
+  </div>
+
+</div>
 </body>
 </html>`;
 

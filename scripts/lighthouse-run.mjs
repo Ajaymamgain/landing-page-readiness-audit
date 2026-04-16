@@ -29,4 +29,8 @@ const args = [
 ];
 
 const child = spawn('npx', args, { cwd: root, stdio: 'inherit', env: { ...process.env } });
+child.on('error', (err) => {
+  console.error(`Failed to spawn npx: ${err.message}`);
+  process.exit(1);
+});
 child.on('exit', (code) => process.exit(code ?? 1));

@@ -7,8 +7,7 @@
   "scripts": {
     "lh": "node scripts/lighthouse-run.mjs",
     "probe": "node scripts/playwright-probe.mjs",
-    "report": "node scripts/run-report.mjs",
-    "audit": "node scripts/run-report.mjs"
+    "report": "node scripts/run-report.mjs"
   },
   "devDependencies": {
     "lighthouse": "^12.8.1",
