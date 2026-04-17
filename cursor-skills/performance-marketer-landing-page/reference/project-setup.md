@@ -1,12 +1,12 @@
 # Project setup
 
-The audit runs from the `google-ads-readiness-audit` project (name kept for continuity; functionally it is a **landing-page readiness** tool for paid campaigns).
+The audit runs from this repo ([**landing-page-readiness-audit**](https://github.com/Ajaymamgain/landing-page-readiness-audit) on GitHub). Your local clone folder name may differ.
 
 ## First-time setup
 
 ```bash
-# 1. Clone / check project
-cd ~/Projects/google-ads-readiness-audit
+# 1. Clone / check project (example path)
+cd ~/Projects/landing-page-readiness-audit
 npm install
 npx playwright install chromium
 
@@ -22,7 +22,7 @@ pip install -r requirements.txt
 ## Run an audit
 
 ```bash
-cd ~/Projects/google-ads-readiness-audit
+cd ~/Projects/landing-page-readiness-audit
 npm run report -- https://yoursite.com/landing-page ecommerce
 open reports/readiness-report.html
 ```

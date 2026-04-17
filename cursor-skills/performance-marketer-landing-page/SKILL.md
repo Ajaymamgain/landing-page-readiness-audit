@@ -37,15 +37,13 @@ This skill is for **advertisers** — teams buying paid media on Google Ads, Lin
 
 ## When NOT to use
 
-- Auditing a site that **serves** Google Publisher Ads (GPT / AdSense). Use [`publisher-ads-readiness`](../publisher-ads-readiness/SKILL.md) instead.
+- Auditing a **publisher** site that monetizes with Google Publisher Ads (GPT / AdSense / GAM) — that workflow is out of scope for this repo; use upstream [Publisher Ads Lighthouse plugin docs](https://github.com/googleads/publisher-ads-lighthouse-plugin) as reference.
 - Pure accessibility or SEO audits (run stock Lighthouse standalone).
 - Paid media attribution / analytics questions (this is a page audit, not a campaign analytics audit).
 
 ## Related skills
 
-- [`conversion-ops`](../conversion-ops/SKILL.md) — CRO 8-dimension scoring (pulled into this skill's pipeline).
-- [`publisher-ads-readiness`](../publisher-ads-readiness/SKILL.md) — for sites serving ads, not receiving paid traffic.
-- [`google-ads-audit-skills-checklist`](../google-ads-audit-skills-checklist/SKILL.md) — 24 Publisher Ads playbooks (reference material only for this skill).
+- [`conversion-ops`](../conversion-ops/SKILL.md) — CRO 8-dimension scoring (pulled into this skill's pipeline when `cro_audit.py` is installed).
 
 ## File map
 

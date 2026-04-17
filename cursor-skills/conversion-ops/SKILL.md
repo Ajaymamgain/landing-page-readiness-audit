@@ -36,9 +36,9 @@ Dimensions (each 0–100): Headline Clarity, CTA Visibility, Social Proof, Urgen
 
 Industries include: `saas`, `ecommerce`, `agency`, `finance`, `healthcare`, `education`, `b2b`, `general`.
 
-## Pair with Google Ads / speed readiness
+## Pair with landing-page readiness (this repo)
 
-For **monetization + performance**, combine with [`google-ads-readiness-modern`](../google-ads-readiness-modern/SKILL.md) and the `google-ads-readiness-audit` project (`npm run report`) so stakeholders get **lab speed + Playwright ad signals +** (separately) **CRO copy/UX** scoring. See [conversion-ops.md](../google-ads-readiness-modern/reference/conversion-ops.md) in that skill.
+Use upstream **conversion-ops** together with **[`landing-page-readiness-audit`](https://github.com/Ajaymamgain/landing-page-readiness-audit)** (`npm run report`) so stakeholders get **lab speed + Playwright + CRO** in one `readiness-report.html`. Install steps and how `cro_audit.py` is invoked: [`performance-marketer-landing-page` / reference/project-setup.md](../performance-marketer-landing-page/reference/project-setup.md).
 
 ## Privacy note
 

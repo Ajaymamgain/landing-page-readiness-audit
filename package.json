@@ -1,8 +1,8 @@
 {
-  "name": "google-ads-readiness-audit",
+  "name": "landing-page-readiness-audit",
   "version": "1.1.0",
   "private": true,
-  "description": "Stock Lighthouse + Playwright → ONE readiness-report.html (no publisher-ads plugin).",
+  "description": "Stock Lighthouse + Playwright + optional CRO → one readiness-report.html for paid landing pages.",
   "type": "module",
   "scripts": {
     "lh": "node scripts/lighthouse-run.mjs",
