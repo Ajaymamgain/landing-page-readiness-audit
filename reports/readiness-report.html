@@ -1,478 +1,759 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Readiness Report — https://lobangnow.com/</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Landing Page Audit — https://lobangnow.com/</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-    :root{
-      --bg:#08090d;--surface:#0f1117;--surface2:#161822;--surface3:#1c1f2e;
-      --border:#232640;--border2:#2d3154;
-      --text:#e8eaf0;--text2:#a0a5c0;--text3:#6b7094;
-      --green:#0cce6b;--amber:#ffa400;--red:#ff4e42;
-      --blue:#4f8ff7;--purple:#a78bfa;
-      --green-bg:rgba(12,206,107,.08);--amber-bg:rgba(255,164,0,.08);--red-bg:rgba(255,78,66,.08);
-      --radius:12px;--radius-sm:8px;
-    }
+:root{
+  --bg:#08090d;--surface:#0f1117;--surface2:#161822;--surface3:#1c1f2e;
+  --border:#232640;--border2:#2d3154;
+  --text:#e8eaf0;--text2:#a0a5c0;--text3:#6b7094;
+  --green:#0cce6b;--amber:#ffa400;--red:#ff4e42;
+  --blue:#4f8ff7;--purple:#a78bfa;--pink:#f472b6;--cyan:#22d3ee;
+  --green-bg:rgba(12,206,107,.08);--amber-bg:rgba(255,164,0,.08);--red-bg:rgba(255,78,66,.08);
+  --radius:12px;--radius-sm:8px;
+}
 
-    body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
 
-    .page{max-width:1000px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+/* Header */
+.header{text-align:center;padding:1.5rem 0 2rem;border-bottom:1px solid var(--border)}
+.header-eyebrow{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--blue);margin-bottom:.75rem}
+.header h1{font-size:1.8rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.5rem;line-height:1.2}
+.header .url{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--blue);word-break:break-all;margin-bottom:1rem;display:inline-block;max-width:100%}
+.header .meta-row{display:flex;gap:1.25rem;justify-content:center;flex-wrap:wrap;font-size:.75rem;color:var(--text3)}
+.header .meta-row span{display:inline-flex;align-items:center;gap:.3rem}
 
-    /* --- Header --- */
-    .header{text-align:center;padding:2rem 0 2.5rem;border-bottom:1px solid var(--border)}
-    .header h1{font-size:1.75rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.5rem}
-    .header .url{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--blue);word-break:break-all;margin-bottom:1rem}
-    .header .meta-row{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;font-size:.78rem;color:var(--text3)}
-    .header .meta-row span{display:inline-flex;align-items:center;gap:.35rem}
+/* Verdict */
+.verdict{margin:2rem 0 2.5rem;padding:1.5rem 2rem;border-radius:var(--radius);position:relative;overflow:hidden;display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap}
+.verdict-pass{background:var(--green-bg);border:1px solid rgba(12,206,107,.25)}
+.verdict-fail{background:var(--red-bg);border:1px solid rgba(255,78,66,.25)}
+.verdict-review{background:var(--amber-bg);border:1px solid rgba(255,164,0,.25)}
+.verdict-stamp{flex-shrink:0;text-align:center;padding:1rem 1.25rem;border-radius:var(--radius-sm);min-width:120px}
+.verdict-pass .verdict-stamp{background:rgba(12,206,107,.15)}
+.verdict-fail .verdict-stamp{background:rgba(255,78,66,.15)}
+.verdict-review .verdict-stamp{background:rgba(255,164,0,.15)}
+.verdict-stamp-big{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;letter-spacing:.02em;margin-bottom:.25rem}
+.verdict-pass .verdict-stamp-big{color:var(--green)}
+.verdict-fail .verdict-stamp-big{color:var(--red)}
+.verdict-review .verdict-stamp-big{color:var(--amber)}
+.verdict-stamp-sub{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);font-weight:600}
+.verdict-body{flex:1;min-width:240px}
+.verdict-body h2{font-size:1.3rem;font-weight:700;margin-bottom:.5rem}
+.verdict-pass .verdict-body h2{color:var(--green)}
+.verdict-fail .verdict-body h2{color:var(--red)}
+.verdict-review .verdict-body h2{color:var(--amber)}
+.verdict-reasons{list-style:none;margin-top:.75rem}
+.verdict-reasons li{padding:.3rem 0;font-size:.85rem;color:var(--text2);border-left:2px solid var(--border2);padding-left:.75rem;margin-bottom:.2rem}
 
-    /* --- Verdict banner --- */
-    .verdict{margin:2rem 0;padding:1.5rem 2rem;border-radius:var(--radius);position:relative;overflow:hidden}
-    .verdict::before{content:'';position:absolute;inset:0;border-radius:var(--radius);pointer-events:none}
-    .verdict-pass{background:var(--green-bg);border:1px solid rgba(12,206,107,.25)}
-    .verdict-pass::before{box-shadow:inset 0 1px 0 rgba(12,206,107,.15)}
-    .verdict-fail{background:var(--red-bg);border:1px solid rgba(255,78,66,.25)}
-    .verdict-fail::before{box-shadow:inset 0 1px 0 rgba(255,78,66,.15)}
-    .verdict-review{background:var(--amber-bg);border:1px solid rgba(255,164,0,.25)}
-    .verdict-review::before{box-shadow:inset 0 1px 0 rgba(255,164,0,.15)}
-    .verdict-badge{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:.3rem .7rem;border-radius:100px;margin-bottom:.75rem}
-    .verdict-pass .verdict-badge{background:rgba(12,206,107,.15);color:var(--green)}
-    .verdict-fail .verdict-badge{background:rgba(255,78,66,.15);color:var(--red)}
-    .verdict-review .verdict-badge{background:rgba(255,164,0,.15);color:var(--amber)}
-    .verdict h2{font-size:1.35rem;font-weight:700;margin-bottom:.5rem}
-    .verdict-pass h2{color:var(--green)}
-    .verdict-fail h2{color:var(--red)}
-    .verdict-review h2{color:var(--amber)}
-    .verdict p{font-size:.88rem;color:var(--text2);line-height:1.65}
+/* Gauges */
+.gauges{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin:2rem 0 2.5rem;padding:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.gauge{position:relative;text-align:center}
+.gauge-val{position:absolute;top:50%;left:50%;transform:translate(-50%,-65%);font-size:1.55rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.gauge-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-top:.4rem;font-weight:600}
 
-    /* --- Gauges --- */
-    .gauges{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin:2.5rem 0}
-    .gauge{position:relative;text-align:center;width:120px}
-    .gauge svg{display:block}
-    .gauge-val{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:1.7rem;font-weight:700;font-family:'JetBrains Mono',monospace}
-    .gauge-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-top:.35rem;font-weight:500}
+/* Sections */
+.section{margin-top:2.5rem}
+.section-title{font-size:1.05rem;font-weight:700;color:var(--text);padding-bottom:.5rem;border-bottom:1px solid var(--border);margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.section-title .tag{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:.2rem .55rem;border-radius:100px;background:var(--surface3);color:var(--text3)}
+.section-title .tag-ok{background:rgba(12,206,107,.15);color:var(--green)}
+.section-title .tag-bad{background:rgba(255,78,66,.15);color:var(--red)}
+.section-title .tag-warn{background:rgba(255,164,0,.15);color:var(--amber)}
+.section-sub{font-size:.82rem;color:var(--text3);margin-bottom:.9rem}
 
-    /* --- Vitals --- */
-    .vitals{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:1.5rem 0 2.5rem}
-    .vital{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.1rem;border-radius:var(--radius-sm);border:1px solid var(--border)}
-    .vital-label{font-size:.78rem;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
-    .vital-value{font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:700}
-    .vital-good{background:var(--green-bg);border-color:rgba(12,206,107,.2)}.vital-good .vital-value{color:var(--green)}
-    .vital-needs-work{background:var(--amber-bg);border-color:rgba(255,164,0,.2)}.vital-needs-work .vital-value{color:var(--amber)}
-    .vital-poor{background:var(--red-bg);border-color:rgba(255,78,66,.2)}.vital-poor .vital-value{color:var(--red)}
-    .vital-na{background:var(--surface)}.vital-na .vital-value{color:var(--text3)}
+/* Vitals */
+.vitals{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.75rem;margin-bottom:.5rem}
+.vital{padding:.9rem 1rem;border-radius:var(--radius-sm);border:1px solid var(--border)}
+.vital-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.45rem}
+.vital-label{font-size:.7rem;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.vital-badge{font-size:.58rem;font-weight:700;padding:.12rem .4rem;border-radius:100px;text-transform:uppercase;letter-spacing:.04em}
+.vital-value{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;margin-bottom:.15rem}
+.vital-threshold{font-size:.68rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.vital-good{background:var(--green-bg);border-color:rgba(12,206,107,.2)}.vital-good .vital-value,.vital-good .vital-badge{color:var(--green)}
+.vital-needs-work{background:var(--amber-bg);border-color:rgba(255,164,0,.2)}.vital-needs-work .vital-value,.vital-needs-work .vital-badge{color:var(--amber)}
+.vital-poor{background:var(--red-bg);border-color:rgba(255,78,66,.2)}.vital-poor .vital-value,.vital-poor .vital-badge{color:var(--red)}
+.vital-na{background:var(--surface)}.vital-na .vital-value,.vital-na .vital-badge{color:var(--text3)}
 
-    /* --- Sections --- */
-    .section{margin-top:2.5rem}
-    .section-title{font-size:1rem;font-weight:700;color:var(--text);padding-bottom:.5rem;border-bottom:1px solid var(--border);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
-    .section-title .tag{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:.2rem .55rem;border-radius:100px;background:var(--surface3);color:var(--text3)}
+/* Filmstrip */
+.filmstrip{display:flex;gap:.45rem;overflow-x:auto;padding:.75rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.frame{flex-shrink:0;text-align:center}
+.frame img{width:80px;height:auto;border:1px solid var(--border);border-radius:4px;background:#fff}
+.frame-time{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text3);margin-top:.35rem}
 
-    /* --- Priority list --- */
-    .priorities{list-style:none;counter-reset:pri}
-    .priorities li{counter-increment:pri;display:flex;gap:.85rem;align-items:flex-start;padding:.85rem 1rem;border-radius:var(--radius-sm);margin-bottom:.5rem;background:var(--surface);border:1px solid var(--border);font-size:.85rem;color:var(--text2);line-height:1.5}
-    .priorities li::before{content:'P' counter(pri);flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--surface3);color:var(--text3)}
-    .priorities li:first-child::before{background:rgba(255,78,66,.12);color:var(--red)}
-    .priorities li:nth-child(2)::before{background:rgba(255,164,0,.12);color:var(--amber)}
+/* Tables */
+.table-wrap{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{background:var(--surface2);color:var(--text3);font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.65rem .85rem;text-align:left;white-space:nowrap}
+td{padding:.6rem .85rem;border-top:1px solid var(--border);color:var(--text2);vertical-align:top}
+tr:hover td{background:rgba(255,255,255,.015)}
+td.num{font-family:'JetBrains Mono',monospace;font-weight:700;text-align:right;white-space:nowrap}
+.savings-bar{display:inline-block;width:60px;height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;vertical-align:middle;margin-right:.4rem}
+.savings-bar-fill{height:100%;background:var(--red)}
 
-    /* --- Tables --- */
-    .table-wrap{overflow-x:auto;margin:.75rem 0;border-radius:var(--radius-sm);border:1px solid var(--border)}
-    table{width:100%;border-collapse:collapse;font-size:.82rem}
-    th{background:var(--surface2);color:var(--text3);font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:.65rem .85rem;text-align:left}
-    td{padding:.6rem .85rem;border-top:1px solid var(--border);color:var(--text2);vertical-align:top}
-    tr:hover td{background:rgba(255,255,255,.015)}
-    .score-bad{color:var(--red);font-weight:600}
-    .score-warn{color:var(--amber);font-weight:600}
-    .score-ok{color:var(--green);font-weight:600}
+/* Pixels grid */
+.pixels{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem}
+.pixel{display:flex;align-items:center;gap:.5rem;padding:.6rem .75rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);font-size:.8rem}
+.pixel-yes{background:rgba(12,206,107,.05);border-color:rgba(12,206,107,.25)}
+.pixel-no{opacity:.45}
+.pixel-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--text3)}
+.pixel-yes .pixel-dot{background:var(--green);box-shadow:0 0 6px rgba(12,206,107,.6)}
+.pixel-name{flex:1;font-weight:500}
+.pixel-count{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text3)}
 
-    /* --- Checklist (Publisher Ads concepts) --- */
-    .checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.6rem;margin:.75rem 0}
-    .check-item{display:flex;gap:.65rem;padding:.75rem .9rem;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);font-size:.82rem;align-items:flex-start}
-    .check-icon{font-size:1rem;flex-shrink:0;line-height:1.2}
-    .check-body{flex:1}
-    .check-topic{font-weight:600;color:var(--text);margin-bottom:.15rem}
-    .check-refs{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text3);word-break:break-all}
+/* Issue lists */
+.issues{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.45rem}
+.issue{padding:.6rem .8rem;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);font-size:.8rem;display:flex;gap:.5rem;align-items:flex-start}
+.issue-dot{width:6px;height:6px;border-radius:50%;margin-top:.5rem;flex-shrink:0}
+.issue-bad .issue-dot{background:var(--red)}
+.issue-warn .issue-dot{background:var(--amber)}
 
-    /* --- Playwright signals --- */
-    .signal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6rem;margin:.75rem 0}
-    .signal{padding:.85rem 1rem;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border)}
-    .signal-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);margin-bottom:.25rem;font-weight:500}
-    .signal-value{font-size:1rem;font-weight:600}
-    .signal-yes{color:var(--green)}.signal-no{color:var(--text3)}.signal-warn{color:var(--amber)}
+/* CRO */
+.dim-row{display:flex;gap:.75rem;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--border)}
+.dim-row:last-child{border-bottom:none}
+.dim-name{flex:1.2;font-size:.82rem;font-weight:500}
+.dim-score{width:50px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700}
+.dim-note{flex:2;font-size:.76rem;color:var(--text3)}
 
-    /* --- CRO dimension table --- */
-    .dim-row{display:flex;gap:.5rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border)}
-    .dim-row:last-child{border-bottom:none}
-    .dim-name{flex:1;font-size:.82rem;font-weight:500}
-    .dim-note{flex:1.5;font-size:.78rem;color:var(--text3)}
-    .dim-badge{font-size:.62rem;font-weight:600;padding:.15rem .45rem;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
-    .dim-cro{background:rgba(167,139,250,.1);color:var(--purple)}
-    .dim-overlap{background:rgba(79,143,247,.1);color:var(--blue)}
-    .dim-lh{background:rgba(12,206,107,.1);color:var(--green)}
+/* Policy grid */
+.policy{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.5rem}
+.policy-item{display:flex;gap:.5rem;padding:.65rem .8rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);font-size:.82rem;align-items:center}
+.policy-check{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
+.policy-pass{background:rgba(12,206,107,.15);color:var(--green)}
+.policy-fail{background:rgba(255,78,66,.15);color:var(--red)}
+.policy-manual{background:var(--surface3);color:var(--text3)}
 
-    /* --- Evidence --- */
-    .evidence{margin-top:1.25rem;padding:1rem 1.25rem;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border)}
-    .evidence code{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--blue)}
-    .evidence li{margin-bottom:.35rem;font-size:.82rem;color:var(--text2)}
+/* Evidence */
+.evidence{padding:1rem 1.25rem;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border)}
+.evidence li{margin-bottom:.35rem;font-size:.82rem;color:var(--text2);list-style:none}
+.evidence code{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--blue)}
 
-    /* --- Footer --- */
-    .footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);text-align:center;font-size:.75rem;color:var(--text3);line-height:1.7}
+/* Footer */
+.footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);text-align:center;font-size:.72rem;color:var(--text3);line-height:1.7}
 
-    /* --- Print --- */
-    @media print{
-      :root{--bg:#fff;--surface:#f8f9fa;--surface2:#f0f1f4;--surface3:#e8eaf0;--border:#dee0e8;--border2:#ccc;--text:#1a1a2e;--text2:#444;--text3:#777;--green-bg:#e6f9ef;--amber-bg:#fff5e0;--red-bg:#ffeae8}
-      body{background:#fff;color:#1a1a2e;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-      .page{max-width:100%;padding:1rem}
-      .verdict,.vital,.check-item,.signal,.priorities li,.evidence{break-inside:avoid}
-      .section{break-inside:avoid}
-    }
-  </style>
+/* Print */
+@media print{
+  :root{--bg:#fff;--surface:#f8f9fa;--surface2:#f0f1f4;--surface3:#e8eaf0;--border:#dee0e8;--border2:#ccc;--text:#1a1a2e;--text2:#444;--text3:#777;--green-bg:#e6f9ef;--amber-bg:#fff5e0;--red-bg:#ffeae8}
+  body{background:#fff;color:#1a1a2e;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{max-width:100%;padding:1rem}
+  .section,.verdict,.vital,.gauges,.evidence,.pixel,.issue,.policy-item,.dim-row{break-inside:avoid}
+}
+</style>
 </head>
 <body>
 <div class="page">
 
   <div class="header">
-    <h1>Google Ads / Monetization Readiness</h1>
+    <div class="header-eyebrow">Landing Page Audit for Performance Marketers</div>
+    <h1>Paid-traffic readiness report</h1>
     <div class="url">https://lobangnow.com/</div>
     <div class="meta-row">
-      <span>📅 April 16, 2026 at 10:32 PM</span>
-      <span>🔦 Lighthouse 12.8.2</span>
-      <span>🎭 Playwright probe</span>
-      <span>📋 Stock CLI — no Publisher Ads plugin</span>
+      <span>📅 April 17, 2026 at 06:54 PM</span>
+      <span>🔦 Lighthouse 12.8.2 (mobile)</span>
+      <span>🎭 Playwright pixel probe</span>
+      <span>🎯 CRO live</span>
     </div>
   </div>
 
   <!-- Verdict -->
-  <div class="verdict verdict-review">
-    <div class="verdict-badge">⟳ Review Needed</div>
-    <h2>Needs manual review</h2>
-    <p>Performance 62/100 but no GPT/ad-signature requests seen in Playwright — retest a monetized page. Stock Lighthouse + Playwright only — the deprecated npm Publisher Ads plugin is not used. Monetization readiness requires confirming GPT/ad traffic on representative URLs.</p>
+  <div class="verdict verdict-fail">
+    <div class="verdict-stamp">
+      <div class="verdict-stamp-big">✗ STOP</div>
+      <div class="verdict-stamp-sub">Blockers found</div>
+    </div>
+    <div class="verdict-body">
+      <h2>Not ready — fix before spending</h2>
+      <ul class="verdict-reasons">
+        <li>No conversion pixel detected — campaigns cannot optimize or measure ROAS</li>
+        <li>CRO 39/100 (F) — traffic will convert poorly</li>
+        <li>LCP 5.2s — poor Page Experience</li>
+      </ul>
+    </div>
   </div>
 
-  <!-- Gauges -->
+  <!-- Scorecard gauges -->
   <div class="gauges">
     
-    <div class="gauge">
-      <svg viewBox="0 0 120 120" width="120" height="120">
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#1a1a2e" stroke-width="8"/>
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#ffa400" stroke-width="8"
-          stroke-dasharray="289.02652413026095" stroke-dashoffset="109.83007916949916"
-          stroke-linecap="round" transform="rotate(-90 60 60)"
-          style="transition:stroke-dashoffset .8s ease"/>
+    <div class="gauge" style="width:110px">
+      <svg viewBox="0 0 120 120" width="110" height="110">
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#1a1a2e" stroke-width="8"/>
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#ffa400" stroke-width="8"
+          stroke-dasharray="276.46015351590177" stroke-dashoffset="80.17344451961152"
+          stroke-linecap="round" transform="rotate(-90 60 60)"/>
       </svg>
-      <div class="gauge-val" style="color:#ffa400">62</div>
+      <div class="gauge-val" style="color:#ffa400">71</div>
       <div class="gauge-label">Performance</div>
     </div>
     
-    <div class="gauge">
-      <svg viewBox="0 0 120 120" width="120" height="120">
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#1a1a2e" stroke-width="8"/>
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#0cce6b" stroke-width="8"
-          stroke-dasharray="289.02652413026095" stroke-dashoffset="0"
-          stroke-linecap="round" transform="rotate(-90 60 60)"
-          style="transition:stroke-dashoffset .8s ease"/>
+    <div class="gauge" style="width:110px">
+      <svg viewBox="0 0 120 120" width="110" height="110">
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#1a1a2e" stroke-width="8"/>
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#0cce6b" stroke-width="8"
+          stroke-dasharray="276.46015351590177" stroke-dashoffset="0"
+          stroke-linecap="round" transform="rotate(-90 60 60)"/>
       </svg>
       <div class="gauge-val" style="color:#0cce6b">100</div>
-      <div class="gauge-label">Accessibility</div>
+      <div class="gauge-label">A11y</div>
     </div>
     
-    <div class="gauge">
-      <svg viewBox="0 0 120 120" width="120" height="120">
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#1a1a2e" stroke-width="8"/>
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#0cce6b" stroke-width="8"
-          stroke-dasharray="289.02652413026095" stroke-dashoffset="20.231856689118253"
-          stroke-linecap="round" transform="rotate(-90 60 60)"
-          style="transition:stroke-dashoffset .8s ease"/>
+    <div class="gauge" style="width:110px">
+      <svg viewBox="0 0 120 120" width="110" height="110">
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#1a1a2e" stroke-width="8"/>
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#0cce6b" stroke-width="8"
+          stroke-dasharray="276.46015351590177" stroke-dashoffset="19.35221074611311"
+          stroke-linecap="round" transform="rotate(-90 60 60)"/>
       </svg>
       <div class="gauge-val" style="color:#0cce6b">93</div>
       <div class="gauge-label">Best Practices</div>
     </div>
     
-    <div class="gauge">
-      <svg viewBox="0 0 120 120" width="120" height="120">
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#1a1a2e" stroke-width="8"/>
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#0cce6b" stroke-width="8"
-          stroke-dasharray="289.02652413026095" stroke-dashoffset="0"
-          stroke-linecap="round" transform="rotate(-90 60 60)"
-          style="transition:stroke-dashoffset .8s ease"/>
+    <div class="gauge" style="width:110px">
+      <svg viewBox="0 0 120 120" width="110" height="110">
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#1a1a2e" stroke-width="8"/>
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#0cce6b" stroke-width="8"
+          stroke-dasharray="276.46015351590177" stroke-dashoffset="0"
+          stroke-linecap="round" transform="rotate(-90 60 60)"/>
       </svg>
       <div class="gauge-val" style="color:#0cce6b">100</div>
       <div class="gauge-label">SEO</div>
+    </div>
+    
+    <div class="gauge" style="width:110px">
+      <svg viewBox="0 0 120 120" width="110" height="110">
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#1a1a2e" stroke-width="8"/>
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#ff4e42" stroke-width="8"
+          stroke-dasharray="276.46015351590177" stroke-dashoffset="168.64069364470006"
+          stroke-linecap="round" transform="rotate(-90 60 60)"/>
+      </svg>
+      <div class="gauge-val" style="color:#ff4e42">39</div>
+      <div class="gauge-label">CRO · F</div>
     </div>
   </div>
 
   <!-- Core Web Vitals -->
   <div class="section">
-    <div class="section-title">Core Web Vitals <span class="tag">Lab data</span></div>
+    <div class="section-title">Core Web Vitals <span class="tag">Lab · mobile</span></div>
+    <p class="section-sub">Thresholds: Google's "Good" bar for Page Experience. Field (CrUX) data is authoritative for Quality Score — confirm in PageSpeed Insights when campaign live.</p>
     <div class="vitals">
       <div class="vital vital-poor">
-    <span class="vital-label">LCP</span>
-    <span class="vital-value">6.1 s</span>
+    <div class="vital-top">
+      <span class="vital-label">LCP</span>
+      <span class="vital-badge">Poor</span>
+    </div>
+    <div class="vital-value">5.2 s</div>
+    <div class="vital-threshold">Good ≤ 2.5s · Poor &gt; 4s</div>
   </div>
       <div class="vital vital-good">
-    <span class="vital-label">CLS</span>
-    <span class="vital-value">0</span>
+    <div class="vital-top">
+      <span class="vital-label">CLS</span>
+      <span class="vital-badge">Good</span>
+    </div>
+    <div class="vital-value">0</div>
+    <div class="vital-threshold">Good ≤ 0.1 · Poor &gt; 0.25</div>
   </div>
-      <div class="vital vital-needs-work">
-    <span class="vital-label">TBT</span>
-    <span class="vital-value">260 ms</span>
+      <div class="vital vital-good">
+    <div class="vital-top">
+      <span class="vital-label">TBT</span>
+      <span class="vital-badge">Good</span>
+    </div>
+    <div class="vital-value">200 ms</div>
+    <div class="vital-threshold">Good ≤ 200ms · Poor &gt; 600ms</div>
+  </div>
+      <div class="vital vital-poor">
+    <div class="vital-top">
+      <span class="vital-label">FCP</span>
+      <span class="vital-badge">Poor</span>
+    </div>
+    <div class="vital-value">3.3 s</div>
+    <div class="vital-threshold">Good ≤ 1.8s · Poor &gt; 3s</div>
+  </div>
+      <div class="vital vital-good">
+    <div class="vital-top">
+      <span class="vital-label">Speed Index</span>
+      <span class="vital-badge">Good</span>
+    </div>
+    <div class="vital-value">3.3 s</div>
+    <div class="vital-threshold">Good ≤ 3.4s · Poor &gt; 5.8s</div>
   </div>
       <div class="vital vital-na">
-    <span class="vital-label">INP</span>
-    <span class="vital-value">N/A</span>
+    <div class="vital-top">
+      <span class="vital-label">INP</span>
+      <span class="vital-badge">N/A</span>
+    </div>
+    <div class="vital-value">Field only</div>
+    <div class="vital-threshold">Field-data metric</div>
   </div>
     </div>
   </div>
 
-  <!-- CRO Priorities -->
+
+  <!-- Filmstrip -->
   <div class="section">
-    <div class="section-title">CRO Priority Order <span class="tag">This run</span></div>
-    <ol class="priorities">
-      <li>Fix Performance (62/100): LCP 6.1 s, TBT 260 ms — reduces bounce and lost impressions.</li>
-      <li>Confirm ads: Playwright saw 0 ad-pattern requests; GPT-like traffic not detected — test deal/article routes if homepage is light on ads.</li>
-      <li>Accessibility (100/100) and trust signals — secondary to speed + monetization path.</li>
-      <li>SEO (100/100) — maintain while executing priorities above.</li>
-    </ol>
+    <div class="section-title">Load Filmstrip <span class="tag">8 frames</span></div>
+    <p class="section-sub">What the visitor sees during load. Blank frames past 2s are perceived as slow — fix with critical CSS, preload hero media, and faster TTFB.</p>
+    <div class="filmstrip">
+      <div class="frame">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAHyAPoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AKpAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB//9k=" alt="frame"/>
+        <div class="frame-time">0.4s</div>
+      </div>
+      <div class="frame">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAHyAPoDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwj/xAAZEAEBAQEBAQAAAAAAAAAAAAAAEQEhUTH/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A80Kg2y0IKKAtSACpCqgIolUBagCiAKIUFClUApQApQApQBKIKIFFqUAc81URlpoTNXBVogg0IVRQCpABaQKCpCrUBFEAUQBRKUFEpQUQBRAFqUBQAI51WFzYwrSfCqBmrUSA0MrVVVSgLRBBoZUFEpVFEpSooilIAFIAFIAhSKJSlFEpSqoyIMRFoUQWAGb6tZBGxkoNRClwFumb6BQqpEgNDMOqNDPV6KolKCiUoKJSgolKCjPToNDMII1UqRYgwAy0tKgCkQWixFpSogooUpCAtKyA1SsgjVVgBsYUhGhgBsYAbGAhG0rIDV4VkBqpUBQBlQAAAAAAAFpUAWlQBTiC0WEQKLCIpQhAKEIBQhBCiwQKLwQKLSoIJVqAKIAolWgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAFWoAtEAUQBRAFEAUQBRAFEAUQBRAFKgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAohQUAAAAAAAAAAAAAAAAAAAAAAAAAAAGaVBBaVAFVkWjQhQWlSlBaVCg1RAFEAUQBRAFEAUQBRAFEAUQBSoAgUoAUARpAQUBBYRBBYQEFhAQWIALCAigACAqCgikAQUBBYQEFhAQQBRAGqVKUFpUoC0QBSoA0iCjSIAogCgAKgAFQFEUFQQFVkBpKgggAAAAAAAAAAABQBaVAFpUAWlQBaVAFpUAUqALSoAtKgAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASqgCiAKIAogCiUoKAAFAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z" alt="frame"/>
+        <div class="frame-time">0.8s</div>
+      </div>
+      <div class="frame">
+        <img src="data:image/jpeg;base64,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" alt="frame"/>
+        <div class="frame-time">1.1s</div>
+      </div>
+      <div class="frame">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAHyAPoDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwj/xAAZEAEBAQEBAQAAAAAAAAAAAAAAEQEhUTH/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A80Kg2y0IKKAtSACpCqgIolUBagCiAKIUFClUApQApQApQBKIKIFFqUAc81URlpoTNXBVogg0IVRQCpABaQKCpCrUBFEAUQBRKUFEpQUQBRAFqUBQAI51WFzYwrSfCqBmrUSA0MrVVVSgLRBBoZUFEpVFEpSooilIAFIAFIAhSKJSlFEpSqoyIMRFoUQWAGb6tZBGxkoNRClwFumb6BQqpEgNDMOqNDPV6KolKCiUoKJSgolKCjPToNDMII1UqRYgwAy0tKgCkQWixFpSogooUpCAtKyA1SsgjVVgBsYUhGhgBsYAbGAhG0rIDV4VkBqpUBQBlQAAAAAAAFpUAWlQBTiC0WEQKLCIpQhAKEIBQhBCiwQKLwQKLSoIJVqAKIAolWgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAFWoAtEAUQBRAFEAUQBRAFEAUQBRAFKgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAohQUAAAAAAAAAAAAAAAAAAAAAAAAAAAGaVBBaVAFVkWjQhQWlSlBaVCg1RAFEAUQBRAFEAUQBRAFEAUQBSoAgUoAUARpAQUBBYRBBYQEFhAQWIALCAigACAqCgikAQUBBYQEFhAQQBRAGqVKUFpUoC0QBSoA0iCjSIAogCgAKgAFQFEUFQQFVkBpKgggAAAAAAAAAAABQBaVAFpUAWlQBaVAFpUAUqALSoAtKgAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASqgCiAKIAogCiUoKAAFAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z" alt="frame"/>
+        <div class="frame-time">1.5s</div>
+      </div>
+      <div class="frame">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAHyAPoDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwj/xAAZEAEBAQEBAQAAAAAAAAAAAAAAEQEhUTH/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A80Kg2y0IKKAtSACpCqgIolUBagCiAKIUFClUApQApQApQBKIKIFFqUAc81URlpoTNXBVogg0IVRQCpABaQKCpCrUBFEAUQBRKUFEpQUQBRAFqUBQAI51WFzYwrSfCqBmrUSA0MrVVVSgLRBBoZUFEpVFEpSooilIAFIAFIAhSKJSlFEpSqoyIMRFoUQWAGb6tZBGxkoNRClwFumb6BQqpEgNDMOqNDPV6KolKCiUoKJSgolKCjPToNDMII1UqRYgwAy0tKgCkQWixFpSogooUpCAtKyA1SsgjVVgBsYUhGhgBsYAbGAhG0rIDV4VkBqpUBQBlQAAAAAAAFpUAWlQBTiC0WEQKLCIpQhAKEIBQhBCiwQKLwQKLSoIJVqAKIAolWgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAFWoAtEAUQBRAFEAUQBRAFEAUQBRAFKgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAohQUAAAAAAAAAAAAAAAAAAAAAAAAAAAGaVBBaVAFVkWjQhQWlSlBaVCg1RAFEAUQBRAFEAUQBRAFEAUQBSoAgUoAUARpAQUBBYRBBYQEFhAQWIALCAigACAqCgikAQUBBYQEFhAQQBRAGqVKUFpUoC0QBSoA0iCjSIAogCgAKgAFQFEUFQQFVkBpKgggAAAAAAAAAAABQBaVAFpUAWlQBaVAFpUAUqALSoAtKgAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASqgCiAKIAogCiUoKAAFAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z" alt="frame"/>
+        <div class="frame-time">1.9s</div>
+      </div>
+      <div class="frame">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAHyAPoDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwj/xAAZEAEBAQEBAQAAAAAAAAAAAAAAEQEhUTH/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A80Kg2y0IKKAtSACpCqgIolUBagCiAKIUFClUApQApQApQBKIKIFFqUAc81URlpoTNXBVogg0IVRQCpABaQKCpCrUBFEAUQBRKUFEpQUQBRAFqUBQAI51WFzYwrSfCqBmrUSA0MrVVVSgLRBBoZUFEpVFEpSooilIAFIAFIAhSKJSlFEpSqoyIMRFoUQWAGb6tZBGxkoNRClwFumb6BQqpEgNDMOqNDPV6KolKCiUoKJSgolKCjPToNDMII1UqRYgwAy0tKgCkQWixFpSogooUpCAtKyA1SsgjVVgBsYUhGhgBsYAbGAhG0rIDV4VkBqpUBQBlQAAAAAAAFpUAWlQBTiC0WEQKLCIpQhAKEIBQhBCiwQKLwQKLSoIJVqAKIAolWgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAFWoAtEAUQBRAFEAUQBRAFEAUQBRAFKgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAohQUAAAAAAAAAAAAAAAAAAAAAAAAAAAGaVBBaVAFVkWjQhQWlSlBaVCg1RAFEAUQBRAFEAUQBRAFEAUQBSoAgUoAUARpAQUBBYRBBYQEFhAQWIALCAigACAqCgikAQUBBYQEFhAQQBRAGqVKUFpUoC0QBSoA0iCjSIAogCgAKgAFQFEUFQQFVkBpKgggAAAAAAAAAAABQBaVAFpUAWlQBaVAFpUAUqALSoAtKgAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASqgCiAKIAogCiUoKAAFAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z" alt="frame"/>
+        <div class="frame-time">2.3s</div>
+      </div>
+      <div class="frame">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAHyAPoDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwj/xAAZEAEBAQEBAQAAAAAAAAAAAAAAEQEhUTH/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A80Kg2y0IKKAtSACpCqgIolUBagCiAKIUFClUApQApQApQBKIKIFFqUAc81URlpoTNXBVogg0IVRQCpABaQKCpCrUBFEAUQBRKUFEpQUQBRAFqUBQAI51WFzYwrSfCqBmrUSA0MrVVVSgLRBBoZUFEpVFEpSooilIAFIAFIAhSKJSlFEpSqoyIMRFoUQWAGb6tZBGxkoNRClwFumb6BQqpEgNDMOqNDPV6KolKCiUoKJSgolKCjPToNDMII1UqRYgwAy0tKgCkQWixFpSogooUpCAtKyA1SsgjVVgBsYUhGhgBsYAbGAhG0rIDV4VkBqpUBQBlQAAAAAAAFpUAWlQBTiC0WEQKLCIpQhAKEIBQhBCiwQKLwQKLSoIJVqAKIAolWgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAFWoAtEAUQBRAFEAUQBRAFEAUQBRAFKgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAohQUAAAAAAAAAAAAAAAAAAAAAAAAAAAGaVBBaVAFVkWjQhQWlSlBaVCg1RAFEAUQBRAFEAUQBRAFEAUQBSoAgUoAUARpAQUBBYRBBYQEFhAQWIALCAigACAqCgikAQUBBYQEFhAQQBRAGqVKUFpUoC0QBSoA0iCjSIAogCgAKgAFQFEUFQQFVkBpKgggAAAAAAAAAAABQBaVAFpUAWlQBaVAFpUAUqALSoAtKgAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASqgCiAKIAogCiUoKAAFAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z" alt="frame"/>
+        <div class="frame-time">2.6s</div>
+      </div>
+      <div class="frame">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAHyAPoDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwj/xAAZEAEBAQEBAQAAAAAAAAAAAAAAEQEhUTH/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A80Kg2y0IKKAtSACpCqgIolUBagCiAKIUFClUApQApQApQBKIKIFFqUAc81URlpoTNXBVogg0IVRQCpABaQKCpCrUBFEAUQBRKUFEpQUQBRAFqUBQAI51WFzYwrSfCqBmrUSA0MrVVVSgLRBBoZUFEpVFEpSooilIAFIAFIAhSKJSlFEpSqoyIMRFoUQWAGb6tZBGxkoNRClwFumb6BQqpEgNDMOqNDPV6KolKCiUoKJSgolKCjPToNDMII1UqRYgwAy0tKgCkQWixFpSogooUpCAtKyA1SsgjVVgBsYUhGhgBsYAbGAhG0rIDV4VkBqpUBQBlQAAAAAAAFpUAWlQBTiC0WEQKLCIpQhAKEIBQhBCiwQKLwQKLSoIJVqAKIAolWgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAFWoAtEAUQBRAFEAUQBRAFEAUQBRAFKgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAohQUAAAAAAAAAAAAAAAAAAAAAAAAAAAGaVBBaVAFVkWjQhQWlSlBaVCg1RAFEAUQBRAFEAUQBRAFEAUQBSoAgUoAUARpAQUBBYRBBYQEFhAQWIALCAigACAqCgikAQUBBYQEFhAQQBRAGqVKUFpUoC0QBSoA0iCjSIAogCgAKgAFQFEUFQQFVkBpKgggAAAAAAAAAAABQBaVAFpUAWlQBaVAFpUAUqALSoAtKgAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASqgCiAKIAogCiUoKAAFAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z" alt="frame"/>
+        <div class="frame-time">3.0s</div>
+      </div>
+    </div>
   </div>
 
-  <!-- Lowest-scoring audits -->
+
+  <!-- Opportunities -->
   <div class="section">
-    <div class="section-title">Lowest-Scoring Audits <span class="tag">10 flagged</span></div>
+    <div class="section-title">Performance Opportunities <span class="tag tag-warn">3 findings</span></div>
+    <p class="section-sub">Ranked by estimated load-time savings. These are the P0/P1 engineering tickets that directly lift Quality Score and reduce CPC.</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Audit</th><th>Score</th><th>Detail</th></tr></thead>
+        <thead><tr><th style="width:45%">Audit</th><th>Savings</th><th>Size</th><th>Biggest offender</th></tr></thead>
         <tbody>
-          <tr><td>Browser errors were logged to the console</td><td class="score-bad">0</td><td></td></tr>
-          <tr><td>Reduce initial server response time</td><td class="score-bad">0</td><td>Root document took 780 ms</td></tr>
-          <tr><td>Missing source maps for large first-party JavaScript</td><td class="score-bad">0</td><td></td></tr>
-          <tr><td>Eliminate render-blocking resources</td><td class="score-bad">0</td><td>Est savings of 770 ms</td></tr>
-          <tr><td>Reduce unused JavaScript</td><td class="score-bad">0</td><td>Est savings of 225 KiB</td></tr>
-          <tr><td>Charset declaration is missing or occurs too late in the HTML</td><td class="score-bad">0</td><td></td></tr>
-          <tr><td>Document request latency</td><td class="score-bad">0</td><td>Est savings of 680 ms</td></tr>
-          <tr><td>Network dependency tree</td><td class="score-bad">0</td><td></td></tr>
-          <tr><td>Render blocking requests</td><td class="score-bad">0</td><td>Est savings of 570 ms</td></tr>
-          <tr><td>Largest Contentful Paint</td><td class="score-bad">12</td><td>6.1 s</td></tr>
-
+          <tr>
+            <td><strong style="color:var(--text)">Reduce unused JavaScript</strong><br/><span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text3)">unused-javascript</span></td>
+            <td class="num"><span class="savings-bar"><span class="savings-bar-fill" style="width:100%"></span></span>1090 ms</td>
+            <td class="num">225 KB</td>
+            <td><code style="font-size:.72rem;color:var(--text3)">lobangnow.com/assets/index-gB4Ybj1_.js</code></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--text)">Eliminate render-blocking resources</strong><br/><span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text3)">render-blocking-resources</span></td>
+            <td class="num"><span class="savings-bar"><span class="savings-bar-fill" style="width:74.95412844036697%"></span></span>817 ms</td>
+            <td class="num">0 KB</td>
+            <td><code style="font-size:.72rem;color:var(--text3)">cdn.tailwindcss.com/3.4.17?plugins=forms@0.5.10,container-qu</code></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--text)">Initial server response time was short</strong><br/><span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text3)">server-response-time</span></td>
+            <td class="num"><span class="savings-bar"><span class="savings-bar-fill" style="width:25.768623853211007%"></span></span>281 ms</td>
+            <td class="num">0 KB</td>
+            <td><code style="font-size:.72rem;color:var(--text3)">lobangnow.com/</code></td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- Playwright signals -->
+
+  <!-- Third parties -->
   <div class="section">
-    <div class="section-title">Playwright — Real Browser Signals</div>
-    <div class="signal-grid">
-      <div class="signal">
-        <div class="signal-label">Ad-pattern requests</div>
-        <div class="signal-value signal-no">0</div>
-      </div>
-      <div class="signal">
-        <div class="signal-label">GPT-like traffic</div>
-        <div class="signal-value signal-no">Not detected</div>
-      </div>
-      <div class="signal">
-        <div class="signal-label">Console / page errors</div>
-        <div class="signal-value signal-yes">None</div>
-      </div>
-      <div class="signal">
-        <div class="signal-label">Page title</div>
-        <div class="signal-value" style="font-size:.82rem;font-weight:400;color:var(--text2)">LobangNow — WhatsApp In. Viral Out. | Singapore Daily Deals</div>
-      </div>
+    <div class="section-title">Third-Party Impact <span class="tag">4 entities</span></div>
+    <p class="section-sub">Every marketing pixel adds to blocking time. If TBT is high, the biggest offenders here are where to start (server-side tagging, async tags, or removing unused tools).</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Entity</th><th>Blocking time</th><th>Main thread</th><th>Transfer</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Google Tag Manager</strong></td>
+            <td class="num" style="color:var(--amber)">115 ms</td>
+            <td class="num">270 ms</td>
+            <td class="num">173 KB</td>
+          </tr>
+          <tr>
+            <td><strong>tailwindcss.com</strong></td>
+            <td class="num" style="color:var(--text2)">41 ms</td>
+            <td class="num">99 ms</td>
+            <td class="num">128 KB</td>
+          </tr>
+          <tr>
+            <td><strong>Google Fonts</strong></td>
+            <td class="num" style="color:var(--text2)">0 ms</td>
+            <td class="num">3 ms</td>
+            <td class="num">48 KB</td>
+          </tr>
+          <tr>
+            <td><strong>Google Analytics</strong></td>
+            <td class="num" style="color:var(--text2)">0 ms</td>
+            <td class="num">0 ms</td>
+            <td class="num">1 KB</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <!-- Publisher Ads concepts -->
+  <!-- Tracking pixels -->
   <div class="section">
-    <div class="section-title">Publisher Ads Audit Concepts <span class="tag">Manual checklist</span></div>
-    <p style="font-size:.82rem;color:var(--text3);margin-bottom:.75rem">The npm <code style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--purple)">lighthouse-plugin-publisher-ads</code> is not executed (incompatible with modern Lighthouse). Verify these themes in DevTools / staging:</p>
-    <div class="checklist">
-      <div class="check-item">
-        <span class="check-icon">⚡</span>
-        <div class="check-body">
-          <div class="check-topic">Tag load &amp; async loading</div>
-          <div class="check-refs">tag-load-time, async-ad-tags</div>
-        </div>
+    <div class="section-title">Conversion Tracking & Pixels <span class="tag tag-bad">1 detected</span></div>
+    <p class="section-sub">Only analytics detected — no conversion pixel will fire for paid campaigns.</p>
+    <div class="pixels">
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Google Tag Manager</span>
+        <span class="pixel-count">—</span>
       </div>
-      <div class="check-item">
-        <span class="check-icon">🔗</span>
-        <div class="check-body">
-          <div class="check-topic">Ad request latency &amp; waterfall</div>
-          <div class="check-refs">ad-request-from-page-start, ad-request-critical-path</div>
-        </div>
+      <div class="pixel pixel-yes">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">GA4 (gtag)</span>
+        <span class="pixel-count">3 req</span>
       </div>
-      <div class="check-item">
-        <span class="check-icon">🔀</span>
-        <div class="check-body">
-          <div class="check-topic">Header bidding &amp; parallel bids</div>
-          <div class="check-refs">serial-header-bidding, gpt-bids-parallel</div>
-        </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Google Ads Conversion</span>
+        <span class="pixel-count">—</span>
       </div>
-      <div class="check-item">
-        <span class="check-icon">📐</span>
-        <div class="check-body">
-          <div class="check-topic">Layout shift around ads</div>
-          <div class="check-refs">cumulative-ad-shift</div>
-        </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Google Ads Remarketing</span>
+        <span class="pixel-count">—</span>
       </div>
-      <div class="check-item">
-        <span class="check-icon">🧱</span>
-        <div class="check-body">
-          <div class="check-topic">Main-thread / ad JS blocking</div>
-          <div class="check-refs">total-ad-blocking-time, ad-blocking-tasks</div>
-        </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">DoubleClick Floodlight</span>
+        <span class="pixel-count">—</span>
       </div>
-      <div class="check-item">
-        <span class="check-icon">🔒</span>
-        <div class="check-body">
-          <div class="check-topic">GPT source, HTTPS, static loaders</div>
-          <div class="check-refs">loads-gpt-from-official-source, loads-ad-tag-over-https, script-injected-tags</div>
-        </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Microsoft Ads (Bing UET)</span>
+        <span class="pixel-count">—</span>
       </div>
-      <div class="check-item">
-        <span class="check-icon">⚠️</span>
-        <div class="check-body">
-          <div class="check-topic">GPT errors &amp; deprecated APIs</div>
-          <div class="check-refs">gpt-errors-overall, deprecated-api-usage</div>
-        </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">LinkedIn Insight</span>
+        <span class="pixel-count">—</span>
       </div>
-      <div class="check-item">
-        <span class="check-icon">📊</span>
-        <div class="check-body">
-          <div class="check-topic">Slot density &amp; viewport</div>
-          <div class="check-refs">viewport-ad-density, ads-in-viewport, ad-top-of-viewport</div>
-        </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Meta Pixel</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">TikTok Pixel</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">X (Twitter) Pixel</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Pinterest Tag</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Reddit Pixel</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Snapchat Pixel</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">HubSpot</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Hotjar</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">FullStory</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Segment</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Mixpanel</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Intercom</span>
+        <span class="pixel-count">—</span>
+      </div>
+      <div class="pixel pixel-no">
+        <span class="pixel-dot"></span>
+        <span class="pixel-name">Drift</span>
+        <span class="pixel-count">—</span>
       </div>
     </div>
+
   </div>
 
-  <!-- Conversion Ops -->
+  <!-- Form & CTA inventory -->
   <div class="section">
-    <div class="section-title">Conversion Ops — 8-Dimension CRO <span class="tag">F — 39/100</span></div>
+    <div class="section-title">Forms & CTAs <span class="tag">0 form(s) · 0 CTA(s)</span></div>
+    <p style="font-size:.82rem;color:var(--text3)">No HTML forms found — this is a link-only landing page. Ensure CTAs deep-link to a form on a subsequent page or trigger a chat widget.</p>
 
-    <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
-      
-    <div class="gauge">
-      <svg viewBox="0 0 120 120" width="120" height="120">
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#1a1a2e" stroke-width="8"/>
-        <circle cx="60" cy="60" r="46" fill="none" stroke="#ff4e42" stroke-width="8"
-          stroke-dasharray="289.02652413026095" stroke-dashoffset="176.30617971945918"
-          stroke-linecap="round" transform="rotate(-90 60 60)"
-          style="transition:stroke-dashoffset .8s ease"/>
-      </svg>
-      <div class="gauge-val" style="color:#ff4e42">39</div>
-      <div class="gauge-label">CRO Score</div>
-    </div>
-      <div style="flex:1;min-width:200px">
-        <div style="font-size:1.1rem;font-weight:700;margin-bottom:.25rem">Overall: 39/100 <span style="color:#ff4e42">(F)</span></div>
-        <div style="font-size:.82rem;color:var(--text3)">
-          Industry: ecommerce —
-          vs avg (58): <span style="color:var(--red)">↓19 pts</span>,
-          vs top quartile (74): <span style="color:var(--red)">↓35 pts</span>
-        </div>
-      </div>
-    </div>
+  </div>
 
+
+  <!-- CRO -->
+  <div class="section">
+    <div class="section-title">Conversion Rate Optimization <span class="tag">F · 39/100</span></div>
+    <p class="section-sub">Industry benchmark: <strong>ecommerce</strong> — avg 58, top quartile 74. You are <span style="color:var(--red)">↓19 pts vs avg</span>, <span style="color:var(--red)">↓35 pts vs top</span>.</p>
     <div style="padding:0 .25rem">
-      <div class="dim-row" style="padding-bottom:.4rem;margin-bottom:.35rem;border-bottom:1px solid var(--border2)">
-        <div class="dim-name" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600">Dimension</div>
-        <div style="width:60px;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600;text-align:center">Score</div>
-        <div class="dim-note" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);font-weight:600">Key finding</div>
+      <div class="dim-row" style="padding-bottom:.4rem;margin-bottom:.25rem;border-bottom:1px solid var(--border2)">
+        <div class="dim-name" style="font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);font-weight:700">Dimension</div>
+        <div class="dim-score" style="font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);font-weight:700">Score</div>
+        <div class="dim-note" style="font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);font-weight:700">Finding</div>
       </div>
       <div class="dim-row">
         <div class="dim-name">Headline Clarity</div>
-        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ff4e42">20</div>
-        <div class="dim-note" style="font-size:.78rem">No H1 tag found on the page</div>
+        <div class="dim-score" style="color:#ff4e42">20</div>
+        <div class="dim-note">No H1 tag found on the page</div>
       </div>
       <div class="dim-row">
         <div class="dim-name">CTA Visibility</div>
-        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ff4e42">15</div>
-        <div class="dim-note" style="font-size:.78rem">No recognizable CTA buttons/links found</div>
+        <div class="dim-score" style="color:#ff4e42">15</div>
+        <div class="dim-note">No recognizable CTA buttons/links found</div>
       </div>
       <div class="dim-row">
         <div class="dim-name">Social Proof</div>
-        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ff4e42">30</div>
-        <div class="dim-note" style="font-size:.78rem"></div>
+        <div class="dim-score" style="color:#ff4e42">30</div>
+        <div class="dim-note">—</div>
       </div>
       <div class="dim-row">
         <div class="dim-name">Urgency</div>
-        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ff4e42">40</div>
-        <div class="dim-note" style="font-size:.78rem">No urgency/scarcity elements detected</div>
+        <div class="dim-score" style="color:#ff4e42">40</div>
+        <div class="dim-note">No urgency/scarcity elements detected</div>
       </div>
       <div class="dim-row">
         <div class="dim-name">Trust Signals</div>
-        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ff4e42">35</div>
-        <div class="dim-note" style="font-size:.78rem"></div>
+        <div class="dim-score" style="color:#ff4e42">35</div>
+        <div class="dim-note">—</div>
       </div>
       <div class="dim-row">
         <div class="dim-name">Form Friction</div>
-        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ffa400">50</div>
-        <div class="dim-note" style="font-size:.78rem">No form or clear conversion mechanism found</div>
+        <div class="dim-score" style="color:#ffa400">50</div>
+        <div class="dim-note">No form or clear conversion mechanism found</div>
       </div>
       <div class="dim-row">
         <div class="dim-name">Mobile Responsiveness</div>
-        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ffa400">85</div>
-        <div class="dim-note" style="font-size:.78rem">Viewport meta tag found: width=device-width, initial-scale=1, maximum-scale=5, user-s</div>
+        <div class="dim-score" style="color:#ffa400">85</div>
+        <div class="dim-note">Viewport meta tag found: width=device-width, initial-scale=1, maximum-scale=5, user-s</div>
       </div>
       <div class="dim-row">
         <div class="dim-name">Page Speed Indicators</div>
-        <div style="width:60px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:#ffa400">70</div>
-        <div class="dim-note" style="font-size:.78rem">HTML size: 3 KB</div>
+        <div class="dim-score" style="color:#ffa400">70</div>
+        <div class="dim-note">HTML size: 3 KB</div>
       </div>
     </div>
 
+    <p style="font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);font-weight:700;margin:1.25rem 0 .5rem">Top CRO fixes</p>
+    <div style="display:flex;gap:.55rem;align-items:flex-start;margin-bottom:.45rem;font-size:.82rem">
+      <span style="flex-shrink:0;font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.04);color:var(--red);text-transform:uppercase;letter-spacing:.04em">HIGH</span>
+      <span style="color:var(--text2)"><strong style="color:var(--text)">CTA Visibility</strong> — Add clear call-to-action buttons with action-oriented text (e.g., 'Get Started Free', 'Book a Demo')</span>
+    </div>
+    <div style="display:flex;gap:.55rem;align-items:flex-start;margin-bottom:.45rem;font-size:.82rem">
+      <span style="flex-shrink:0;font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.04);color:var(--red);text-transform:uppercase;letter-spacing:.04em">HIGH</span>
+      <span style="color:var(--text2)"><strong style="color:var(--text)">Headline Clarity</strong> — Add a clear H1 headline that states your primary value proposition</span>
+    </div>
+    <div style="display:flex;gap:.55rem;align-items:flex-start;margin-bottom:.45rem;font-size:.82rem">
+      <span style="flex-shrink:0;font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.04);color:var(--red);text-transform:uppercase;letter-spacing:.04em">HIGH</span>
+      <span style="color:var(--text2)"><strong style="color:var(--text)">Headline Clarity</strong> — Consider adding a prominent hero section with headline + subheadline + CTA</span>
+    </div>
+    <div style="display:flex;gap:.55rem;align-items:flex-start;margin-bottom:.45rem;font-size:.82rem">
+      <span style="flex-shrink:0;font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.04);color:var(--red);text-transform:uppercase;letter-spacing:.04em">HIGH</span>
+      <span style="color:var(--text2)"><strong style="color:var(--text)">Social Proof</strong> — Add customer testimonials with real names, titles, and photos</span>
+    </div>
+    <div style="display:flex;gap:.55rem;align-items:flex-start;margin-bottom:.45rem;font-size:.82rem">
+      <span style="flex-shrink:0;font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.04);color:var(--red);text-transform:uppercase;letter-spacing:.04em">HIGH</span>
+      <span style="color:var(--text2)"><strong style="color:var(--text)">Social Proof</strong> — Add a logo bar showing recognizable client/partner brands</span>
+    </div>
+    <div style="display:flex;gap:.55rem;align-items:flex-start;margin-bottom:.45rem;font-size:.82rem">
+      <span style="flex-shrink:0;font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.04);color:var(--red);text-transform:uppercase;letter-spacing:.04em">HIGH</span>
+      <span style="color:var(--text2)"><strong style="color:var(--text)">Social Proof</strong> — Add specific numbers (e.g., '10,000+ customers') to quantify trust</span>
+    </div>
+  </div>
 
-    <div style="margin-top:1.25rem">
-      <div style="font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.04em">Top CRO fixes</div>
-      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
-        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
-        <span><strong style="color:var(--text)">CTA Visibility</strong> — Add clear call-to-action buttons with action-oriented text (e.g., 'Get Started Free', 'Book a Demo')</span>
+
+
+
+  <!-- SEO + Best Practices issues -->
+  <div class="section">
+    <div class="section-title">SEO & Best Practices <span class="tag">3 items</span></div>
+    <div class="issues">
+      <div class="issue issue-bad">
+        <span class="issue-dot"></span>
+        <span><strong style="color:var(--text);font-size:.75rem">BP</strong> · Charset declaration is missing or occurs too late in the HTML</span>
       </div>
-      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
-        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
-        <span><strong style="color:var(--text)">Headline Clarity</strong> — Add a clear H1 headline that states your primary value proposition</span>
+      <div class="issue issue-bad">
+        <span class="issue-dot"></span>
+        <span><strong style="color:var(--text);font-size:.75rem">BP</strong> · Browser errors were logged to the console</span>
       </div>
-      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
-        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
-        <span><strong style="color:var(--text)">Headline Clarity</strong> — Consider adding a prominent hero section with headline + subheadline + CTA</span>
-      </div>
-      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
-        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
-        <span><strong style="color:var(--text)">Social Proof</strong> — Add customer testimonials with real names, titles, and photos</span>
-      </div>
-      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
-        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
-        <span><strong style="color:var(--text)">Social Proof</strong> — Add a logo bar showing recognizable client/partner brands</span>
-      </div>
-      <div style="display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-size:.82rem;color:var(--text2)">
-        <span style="flex-shrink:0;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--red)">HIGH</span>
-        <span><strong style="color:var(--text)">Social Proof</strong> — Add specific numbers (e.g., '10,000+ customers') to quantify trust</span>
+      <div class="issue issue-bad">
+        <span class="issue-dot"></span>
+        <span><strong style="color:var(--text);font-size:.75rem">BP</strong> · Missing source maps for large first-party JavaScript</span>
       </div>
     </div>
+  </div>
 
+  <!-- Diagnostics -->
+
+
+  <!-- Page weight -->
+  <div class="section">
+    <div class="section-title">Page Weight & Compute</div>
+    <div class="vitals">
+      <div class="vital vital-na">
+        <div class="vital-top"><span class="vital-label">Total bytes</span></div>
+        <div class="vital-value">589 KB</div>
+        <div class="vital-threshold">Total network transfer</div>
+      </div>
+      <div class="vital vital-na">
+        <div class="vital-top"><span class="vital-label">DOM nodes</span></div>
+        <div class="vital-value">1</div>
+        <div class="vital-threshold">Good ≤ 1,500 · Poor > 3,000</div>
+      </div>
+      <div class="vital vital-na">
+        <div class="vital-top"><span class="vital-label">Main thread</span></div>
+        <div class="vital-value">1670 ms</div>
+        <div class="vital-threshold">Scripting + style + layout</div>
+      </div>
+      <div class="vital vital-na">
+        <div class="vital-top"><span class="vital-label">JS bootup</span></div>
+        <div class="vital-value">757 ms</div>
+        <div class="vital-threshold">Parse + compile + execute</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ad platform policy -->
+  <div class="section">
+    <div class="section-title">Ad-Platform Policy Checks <span class="tag">Google · LinkedIn · Meta · Microsoft</span></div>
+    <p class="section-sub">Landing-page items that block ad approval across major platforms. Manual items are flagged — walk them with the media team before launch.</p>
+    <div class="policy">
+      <div class="policy-item">
+        <span class="policy-check policy-pass">✓</span>
+        <span>HTTPS</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-pass">✓</span>
+        <span>Viewport meta (mobile)</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-fail">✗</span>
+        <span>Content fits viewport</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-fail">✗</span>
+        <span>Tap targets ≥ 44px</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-fail">✗</span>
+        <span>Privacy policy link</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-fail">✗</span>
+        <span>Terms link</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-fail">✗</span>
+        <span>Contact link</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-fail">✗</span>
+        <span>Consent banner (if EU/UK)</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-manual">?</span>
+        <span>Clear business identity <span style="color:var(--text3);font-size:.7rem">(manual)</span></span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-manual">?</span>
+        <span>Message match to ad copy <span style="color:var(--text3);font-size:.7rem">(manual)</span></span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-manual">?</span>
+        <span>No prohibited content <span style="color:var(--text3);font-size:.7rem">(manual)</span></span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-manual">?</span>
+        <span>Industry disclosures (finance/health) <span style="color:var(--text3);font-size:.7rem">(manual)</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quality Score composite -->
+  <div class="section">
+    <div class="section-title">Quality Score Signals <span class="tag">Composite view</span></div>
+    <p class="section-sub">Google Ads Quality Score has three components. Landing page experience is fully auditable here. Expected CTR and Ad Relevance require ad account data.</p>
+    <div class="policy">
+      <div class="policy-item">
+        <span class="policy-check policy-manual">~</span>
+        <span>Landing page experience (Perf 71/100, A11y 100/100)</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-pass">✓</span>
+        <span>Secure (HTTPS)</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-fail">✗</span>
+        <span>Mobile-friendly</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-fail">✗</span>
+        <span>Conversion tracking firing</span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-manual">?</span>
+        <span>Expected CTR <span style="color:var(--text3);font-size:.7rem">(ad account)</span></span>
+      </div>
+      <div class="policy-item">
+        <span class="policy-check policy-manual">?</span>
+        <span>Ad relevance to page copy <span style="color:var(--text3);font-size:.7rem">(manual)</span></span>
+      </div>
+    </div>
   </div>
 
   <!-- Evidence -->
   <div class="section">
     <div class="section-title">Evidence <span class="tag">This run</span></div>
-    <div class="evidence">
-      <p style="font-size:.82rem;color:var(--text2);margin-bottom:.65rem">This file is the only narrative report. Supporting machine files:</p>
-      <ul style="list-style:none;padding:0">
-        <li>📄 <code>reports/latest-lh.report.json</code> — Lighthouse JSON</li>
-        <li>📄 <code>reports/latest-lh.report.html</code> — Lighthouse HTML</li>
-        <li>📄 <code>reports/latest-probe.json</code> — Playwright probe JSON</li>
-        <li>📄 <code>reports/latest-cro.json</code> — CRO audit JSON (conversion-ops)</li>
-      </ul>
-    </div>
+    <ul class="evidence">
+      <li>📄 <code>reports/latest-lh.report.json</code> — Lighthouse JSON (full LHR)</li>
+      <li>📄 <code>reports/latest-lh.report.html</code> — Lighthouse HTML (deep-dive)</li>
+      <li>📄 <code>reports/latest-probe.json</code> — Playwright probe JSON</li>
+      <li>📄 <code>reports/latest-cro.json</code> — CRO 8-dimension JSON</li>
+    </ul>
   </div>
 
   <div class="footer">
-    One report per run — regenerate with <code style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--blue)">npm run report -- &lt;url&gt;</code><br/>
-    Not affiliated with Google or the site owner. Lab data only unless you add RUM/CrUX separately.
+    Landing-page audit for performance marketers — Lighthouse 12.8.2 + Playwright + conversion-ops.<br/>
+    Regenerate: <code style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--blue)">npm run report -- &lt;url&gt; [industry]</code>.
+    Lab data only — confirm CrUX / field data in PageSpeed Insights for Quality Score impact.
   </div>
-
 </div>
 </body>
 </html>
